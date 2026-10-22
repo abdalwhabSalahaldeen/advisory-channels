@@ -29,6 +29,16 @@ class User extends Authenticatable implements FilamentUser, HasAppAuthentication
     use InteractsWithAppAuthentication, InteractsWithAppAuthenticationRecovery, InteractsWithEmailAuthentication;
 
     /**
+     * Every account gets an emailed sign-in code (OTP) from day one, as on the Drovox
+     * dashboard, so nobody has to go through the two-factor set-up screen first.
+     *
+     * @var array<string, mixed>
+     */
+    protected $attributes = [
+        'has_email_authentication' => true,
+    ];
+
+    /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>

@@ -85,15 +85,15 @@
             </div>
 
             <div class="lg:col-span-5" data-reveal data-reveal-delay="0.15">
-                <div class="bracket-frame relative aspect-square overflow-hidden rounded-3xl bg-ink-950 p-10 text-white">
+                <div class="bracket-frame relative min-h-96 overflow-hidden rounded-3xl bg-ink-950 p-8 text-white sm:p-10">
                     <div class="grid-lines absolute inset-0" aria-hidden="true"></div>
                     <div class="absolute -bottom-24 -end-24 size-80 rounded-full bg-brand-600/40 blur-[90px]" aria-hidden="true"></div>
-                    <div class="relative flex h-full flex-col justify-between">
+                    <div class="relative flex min-h-80 flex-col justify-between gap-10">
                         <span class="inline-flex w-fit items-center gap-2 rounded-full border border-brand-400/30 bg-brand-400/10 px-4 py-2 text-sm font-bold text-brand-300">
                             <x-ui.icon name="star" class="size-4" />
                             {{ __('index.customize_to_fit') }}
                         </span>
-                        <p class="text-2xl leading-snug font-bold text-balance sm:text-3xl">{{ $site->tr('vision') }}</p>
+                        <p class="text-xl leading-relaxed font-bold text-balance sm:text-2xl">{{ $site->tr('vision') }}</p>
                     </div>
                 </div>
             </div>
@@ -168,24 +168,24 @@
             <x-ui.section-heading dark align="center" :eyebrow="__('index.method_eyebrow')" :title="__('index.method_title')" :text="__('index.method_text')" />
 
             <div class="relative mt-20">
-            <div class="absolute inset-x-0 top-7 hidden h-px bg-gradient-to-r from-transparent via-brand-500/50 to-transparent lg:block" aria-hidden="true"></div>
-            <ol class="relative grid gap-10 md:grid-cols-2 lg:grid-cols-4 lg:gap-6">
-                @foreach (__('index.method') as $step)
-                    <li class="relative" data-reveal data-reveal-delay="{{ $loop->index * 0.1 }}">
-                        <span class="relative inline-flex size-14 items-center justify-center rounded-full border border-brand-500/40 bg-ink-900 font-latin text-lg font-extrabold text-brand-400">
-                            {{ $loop->iteration }}
-                        </span>
-                        <h3 class="mt-6 text-xl font-extrabold">{{ $step['title'] }}</h3>
-                        <p class="mt-3 leading-relaxed text-white/60">{{ $step['text'] }}</p>
-                    </li>
-                @endforeach
-            </ol>
+                <div class="absolute inset-x-0 top-7 hidden h-px bg-gradient-to-r from-transparent via-brand-500/50 to-transparent lg:block" aria-hidden="true"></div>
+                <ol class="relative grid gap-10 md:grid-cols-2 lg:grid-cols-4 lg:gap-6">
+                    @foreach (__('index.method') as $step)
+                        <li class="relative" data-reveal data-reveal-delay="{{ $loop->index * 0.1 }}">
+                            <span class="relative inline-flex size-14 items-center justify-center rounded-full border border-brand-500/40 bg-ink-900 font-latin text-lg font-extrabold text-brand-400">
+                                {{ $loop->iteration }}
+                            </span>
+                            <h3 class="mt-6 text-xl font-extrabold">{{ $step['title'] }}</h3>
+                            <p class="mt-3 leading-relaxed text-white/60">{{ $step['text'] }}</p>
+                        </li>
+                    @endforeach
+                </ol>
             </div>
         </div>
     </section>
 
     {{-- Saudi Gate teaser --}}
-    <section id="saudi-gate" class="py-24 sm:py-32">
+    <section id="saudi-gate" class="overflow-hidden py-24 sm:py-32">
         <div class="container-site">
             <div class="flex flex-col justify-between gap-8 lg:flex-row lg:items-end">
                 <x-ui.section-heading :eyebrow="__('index.gate_eyebrow')" :title="__('index.gate_title')" :text="__('index.gate_text')" />
@@ -240,7 +240,7 @@
 
     {{-- Testimonials --}}
     @if ($testimonials->isNotEmpty())
-        <section id="testimonials" class="py-24 sm:py-32">
+        <section id="testimonials" class="overflow-hidden py-24 sm:py-32">
             <div class="container-site">
                 <x-ui.section-heading :eyebrow="__('index.testimonials_eyebrow')" :title="__('index.testimonials_title')" />
             </div>

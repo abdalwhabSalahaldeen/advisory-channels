@@ -28,8 +28,8 @@
                     href="{{ route($link['route']) }}"
                     @if (request()->routeIs($link['active'])) aria-current="page" @endif
                     @class([
-                        'relative rounded-full px-4 py-2 text-sm font-semibold transition hover:text-white',
-                        'text-white after:absolute after:inset-x-4 after:-bottom-0.5 after:h-0.5 after:rounded-full after:bg-brand-400' => request()->routeIs($link['active']),
+                        'relative whitespace-nowrap rounded-full px-3 py-2 text-sm font-semibold transition hover:text-white xl:px-4',
+                        'text-white after:absolute after:inset-x-3 after:-bottom-0.5 xl:after:inset-x-4 after:h-0.5 after:rounded-full after:bg-brand-400' => request()->routeIs($link['active']),
                         'text-white/70' => ! request()->routeIs($link['active']),
                     ])
                 >{{ $link['label'] }}</a>
@@ -46,11 +46,12 @@
                     class="inline-flex items-center gap-2 rounded-full px-3 py-2 text-sm font-bold text-white/80 transition hover:bg-white/10 hover:text-white"
                 >
                     <x-ui.icon name="globe" class="size-4" />
-                    <span>{{ __('header.switch_language') }}</span>
+                    <span class="hidden xl:inline">{{ __('header.switch_language') }}</span>
+                    <span class="xl:hidden">{{ $otherLocale === 'ar' ? 'ع' : 'EN' }}</span>
                 </a>
             @endif
 
-            <x-ui.button :href="route('request-service')" class="hidden px-5! py-2.5! sm:inline-flex">
+            <x-ui.button :href="route('request-service')" class="px-5! py-2.5! max-sm:hidden!">
                 {{ __('header.request_service') }}
             </x-ui.button>
 

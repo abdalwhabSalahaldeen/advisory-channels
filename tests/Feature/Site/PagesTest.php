@@ -85,6 +85,13 @@ class PagesTest extends TestCase
     }
 
     #[Test]
+    public function x_default_always_points_to_the_arabic_page(): void
+    {
+        $this->get('/en/about')
+            ->assertSee('<link rel="alternate" hreflang="x-default" href="'.url('/ar/about').'">', false);
+    }
+
+    #[Test]
     public function old_wix_urls_redirect_permanently(): void
     {
         $this->get('/about-3')->assertStatus(301)->assertRedirect('/en/about');

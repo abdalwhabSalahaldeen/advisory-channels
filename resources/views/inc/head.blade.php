@@ -16,7 +16,7 @@
 @foreach ($alternates as $code => $url)
     <link rel="alternate" hreflang="{{ $code }}" href="{{ $url }}">
 @endforeach
-<link rel="alternate" hreflang="x-default" href="{{ $alternates[config('app.locale')] ?? url('/') }}">
+<link rel="alternate" hreflang="x-default" href="{{ $alternates[App\Support\Localization::defaultLocale()] ?? url('/') }}">
 
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="{{ $siteName }}">

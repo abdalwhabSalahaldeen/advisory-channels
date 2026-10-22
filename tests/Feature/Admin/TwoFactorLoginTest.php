@@ -92,4 +92,11 @@ class TwoFactorLoginTest extends AdminTestCase
             ->get(Filament::getSetUpRequiredMultiFactorAuthenticationUrl())
             ->assertOk();
     }
+
+    public function test_new_users_get_email_codes_without_a_set_up_step(): void
+    {
+        $user = User::query()->create(['name' => 'Editor', 'email' => 'editor@example.com', 'password' => 'secret-password', 'is_admin' => true]);
+
+        $this->assertTrue($user->fresh()->hasEmailAuthentication());
+    }
 }

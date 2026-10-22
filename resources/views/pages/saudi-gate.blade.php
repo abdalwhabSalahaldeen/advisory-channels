@@ -78,42 +78,41 @@
                 </div>
 
                 <ol class="relative">
+                    @foreach ($packages as $package)
+                        <li id="{{ $package->slug }}" class="group relative grid scroll-mt-28 gap-6 pb-16 ps-20 last:pb-0 sm:grid-cols-2 sm:gap-16 sm:ps-0" data-journey-step>
+                            <span class="absolute start-0 top-0 z-10 inline-flex size-14 items-center justify-center rounded-full border-4 border-white bg-ink-900 font-latin text-lg font-extrabold text-white shadow-lg transition duration-500 group-[.is-active]:bg-brand-700 sm:start-1/2 sm:-translate-x-1/2 rtl:sm:translate-x-1/2">
+                                {{ $loop->iteration }}
+                            </span>
 
-                @foreach ($packages as $package)
-                    <li id="{{ $package->slug }}" class="group relative grid scroll-mt-28 gap-6 pb-16 ps-20 last:pb-0 sm:grid-cols-2 sm:gap-16 sm:ps-0" data-journey-step>
-                        <span class="absolute start-0 top-0 z-10 inline-flex size-14 items-center justify-center rounded-full border-4 border-white bg-ink-900 font-latin text-lg font-extrabold text-white shadow-lg transition duration-500 group-[.is-active]:bg-brand-700 sm:start-1/2 sm:-translate-x-1/2 rtl:sm:translate-x-1/2">
-                            {{ $loop->iteration }}
-                        </span>
+                            <div @class(['sm:pt-3', 'sm:order-2' => $loop->even, 'sm:text-end' => $loop->odd])>
+                                <p class="font-latin text-sm font-bold text-brand-700">{{ __('gate.stage') }} {{ str_pad($loop->iteration, 2, '0', STR_PAD_LEFT) }}</p>
+                                <h3 class="mt-2 text-3xl font-extrabold">
+                                    {{ $package->tr('title') }}
+                                    @if ($package->is_premium)
+                                        <span class="ms-2 inline-block rounded-full bg-sand-500 px-3 py-1 align-middle text-xs font-bold text-white">{{ __('gate.premium') }}</span>
+                                    @endif
+                                </h3>
+                                <p class="mt-3 text-lg font-semibold text-ink-700">{{ $package->tr('tagline') }}</p>
+                            </div>
 
-                        <div @class(['sm:pt-3', 'sm:order-2' => $loop->even, 'sm:text-end' => $loop->odd])>
-                            <p class="font-latin text-sm font-bold text-brand-700">{{ __('gate.stage') }} {{ str_pad($loop->iteration, 2, '0', STR_PAD_LEFT) }}</p>
-                            <h3 class="mt-2 text-3xl font-extrabold">
-                                {{ $package->tr('title') }}
-                                @if ($package->is_premium)
-                                    <span class="ms-2 inline-block rounded-full bg-sand-500 px-3 py-1 align-middle text-xs font-bold text-white">{{ __('gate.premium') }}</span>
+                            <div @class([
+                                'rounded-3xl border p-7 transition duration-500',
+                                'border-sand-500/40 bg-sand-100' => $package->is_premium,
+                                'border-ink-900/5 bg-paper group-[.is-active]:border-brand-500/30 group-[.is-active]:bg-brand-50' => ! $package->is_premium,
+                                'sm:order-1' => $loop->even,
+                            ])>
+                                <p class="leading-relaxed text-ink-700">{{ $package->tr('description') }}</p>
+                                @if ($deliverables = $package->trList('deliverables'))
+                                    <p class="mt-6 text-sm font-bold text-ink-900">{{ __('gate.includes') }}</p>
+                                    <ul class="mt-3 flex flex-wrap gap-2">
+                                        @foreach ($deliverables as $deliverable)
+                                            <li class="rounded-full bg-white px-3 py-1.5 text-xs font-semibold text-ink-700 ring-1 ring-ink-900/5">{{ $deliverable }}</li>
+                                        @endforeach
+                                    </ul>
                                 @endif
-                            </h3>
-                            <p class="mt-3 text-lg font-semibold text-ink-700">{{ $package->tr('tagline') }}</p>
-                        </div>
-
-                        <div @class([
-                            'rounded-3xl border p-7 transition duration-500',
-                            'border-sand-500/40 bg-sand-100' => $package->is_premium,
-                            'border-ink-900/5 bg-paper group-[.is-active]:border-brand-500/30 group-[.is-active]:bg-brand-50' => ! $package->is_premium,
-                            'sm:order-1' => $loop->even,
-                        ])>
-                            <p class="leading-relaxed text-ink-700">{{ $package->tr('description') }}</p>
-                            @if ($deliverables = $package->trList('deliverables'))
-                                <p class="mt-6 text-sm font-bold text-ink-900">{{ __('gate.includes') }}</p>
-                                <ul class="mt-3 flex flex-wrap gap-2">
-                                    @foreach ($deliverables as $deliverable)
-                                        <li class="rounded-full bg-white px-3 py-1.5 text-xs font-semibold text-ink-700 ring-1 ring-ink-900/5">{{ $deliverable }}</li>
-                                    @endforeach
-                                </ul>
-                            @endif
-                        </div>
-                    </li>
-                @endforeach
+                            </div>
+                        </li>
+                    @endforeach
                 </ol>
             </div>
 

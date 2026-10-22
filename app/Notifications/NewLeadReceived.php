@@ -4,6 +4,7 @@ namespace App\Notifications;
 
 use App\Filament\Resources\Leads\LeadResource;
 use App\Models\Lead;
+use App\Support\Localization;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -15,7 +16,8 @@ class NewLeadReceived extends Notification implements ShouldQueue
 
     public function __construct(public Lead $lead)
     {
-        $this->locale(config('app.locale'));
+        // The team reads alerts in the site's default language, whatever language the visitor used.
+        $this->locale(Localization::defaultLocale());
     }
 
     /**

@@ -7,10 +7,11 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\SitemapController;
 use App\Http\Middleware\SetLocale;
+use App\Support\Localization;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::redirect('/', '/'.config('app.locale'));
+Route::redirect('/', '/'.Localization::defaultLocale());
 
 Route::get('sitemap.xml', SitemapController::class)->name('sitemap');
 

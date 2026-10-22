@@ -30,6 +30,15 @@ class Localization
             ->all();
     }
 
+    /**
+     * The site's default locale. Unlike config('app.locale'), this does not
+     * change when a request switches the app to another language.
+     */
+    public static function defaultLocale(): string
+    {
+        return array_key_first(config('site.locales'));
+    }
+
     public static function direction(?string $locale = null): string
     {
         return config('site.locales.'.($locale ?? app()->getLocale()).'.dir', 'ltr');

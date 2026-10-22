@@ -135,6 +135,21 @@ class FormsTest extends TestCase
     }
 
     #[Test]
+    public function the_team_is_alerted_in_arabic_even_for_english_visitors(): void
+    {
+        app()->setLocale('en');
+
+        Livewire::test(ContactForm::class)
+            ->set('full_name', 'Nora')
+            ->set('email', 'nora@example.com')
+            ->set('message', 'Hello')
+            ->set('consent', true)
+            ->call('submit');
+
+        Notification::assertSentOnDemand(NewLeadReceived::class, fn (NewLeadReceived $notification) => $notification->locale === 'ar');
+    }
+
+    #[Test]
     public function a_saudi_gate_enquiry_stores_the_chosen_stages(): void
     {
         Livewire::test(SaudiGateForm::class)
