@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\CaseStudy;
+use App\Models\GatePackage;
 use App\Models\Insight;
 use App\Models\Service;
 use Illuminate\Contracts\View\View;
@@ -13,6 +14,7 @@ class ServiceController extends Controller
     {
         return view('services.index', [
             'services' => Service::query()->published()->get(),
+            'packages' => GatePackage::query()->published()->get(),
         ]);
     }
 

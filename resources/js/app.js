@@ -110,6 +110,34 @@ function readingProgress() {
     });
 }
 
+// Side navigation that marks the section currently in view ([data-scrollspy] > a[href="#id"]).
+function scrollspy() {
+    document.querySelectorAll('[data-scrollspy]').forEach((nav) => {
+        nav.querySelectorAll('a[href^="#"]').forEach((link) => {
+            const target = document.getElementById(link.getAttribute('href').slice(1));
+
+            if (!target) {
+                return;
+            }
+
+            ScrollTrigger.create({
+                trigger: target,
+                start: 'top 45%',
+                end: 'bottom 45%',
+                onToggle: ({ isActive }) => {
+                    link.toggleAttribute('data-active', isActive);
+
+                    if (isActive) {
+                        link.setAttribute('aria-current', 'location');
+                    } else {
+                        link.removeAttribute('aria-current');
+                    }
+                },
+            });
+        });
+    });
+}
+
 function counters() {
     document.querySelectorAll('[data-counter]').forEach((element) => {
         const target = Number(element.dataset.counter);
@@ -200,6 +228,7 @@ document.addEventListener('DOMContentLoaded', () => {
     safely(counters);
     safely(journeyProgress);
     safely(sliders);
+    safely(scrollspy);
 
     document.querySelectorAll('[data-network]').forEach((canvas) => safely(() => networkCanvas(canvas, { reducedMotion })));
 });

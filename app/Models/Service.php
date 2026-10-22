@@ -49,6 +49,16 @@ class Service extends Model
         return $this->hasMany(Lead::class);
     }
 
+    /**
+     * The first paragraph of the body as plain text, for overview pages.
+     */
+    public function intro(?string $locale = null): ?string
+    {
+        preg_match('/<p[^>]*>(.*?)<\/p>/su', (string) $this->tr('body', $locale), $match);
+
+        return isset($match[1]) ? trim(html_entity_decode(strip_tags($match[1]))) : null;
+    }
+
     #[Scope]
     protected function published(Builder $query): void
     {
