@@ -4,6 +4,8 @@ import Lenis from 'lenis';
 import Swiper from 'swiper';
 import { A11y, Keyboard } from 'swiper/modules';
 import { networkCanvas } from './network-canvas';
+import { sectionDots } from './section-dots';
+import { sectionScroll } from './section-scroll';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -11,14 +13,32 @@ const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matc
 
 function smoothScroll() {
     if (reducedMotion) {
-        return;
+        return null;
     }
 
-    const lenis = new Lenis({ lerp: 0.1 });
+    const lenis = new Lenis({ lerp: 0.1, anchors: { offset: -80, duration: 1.2 } });
 
     lenis.on('scroll', ScrollTrigger.update);
     gsap.ticker.add((time) => lenis.raf(time * 1000));
     gsap.ticker.lagSmoothing(0);
+
+    return lenis;
+}
+
+// Section-by-section scrolling is for mouse and trackpad users on wide screens; touch keeps native scrolling.
+function sectionNavigation(lenis) {
+    const desktop = window.matchMedia('(min-width: 1024px) and (pointer: fine)').matches;
+    const dots = document.querySelector('[data-section-dots]');
+
+    if (!lenis || !desktop) {
+        return;
+    }
+
+    const navigation = sectionScroll(lenis, { onChange: (index) => dots?.update?.(index) });
+
+    if (dots && navigation.stops().length >= 3) {
+        sectionDots(dots, navigation);
+    }
 }
 
 function reveals() {
@@ -111,12 +131,27 @@ function sliders() {
     });
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    smoothScroll();
-    reveals();
-    counters();
-    journeyProgress();
-    sliders();
+// Runs one setup step; a failure is logged instead of stopping the steps after it.
+function safely(setup, onError = () => {}) {
+    try {
+        return setup();
+    } catch (error) {
+        console.error(error);
+        onError();
 
-    document.querySelectorAll('[data-network]').forEach((canvas) => networkCanvas(canvas, { reducedMotion }));
+        return null;
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    const lenis = safely(smoothScroll);
+
+    // Reveal targets start hidden (html.js in app.css); never leave them hidden if animating fails.
+    safely(reveals, () => document.documentElement.classList.remove('js'));
+    safely(counters);
+    safely(journeyProgress);
+    safely(sliders);
+    safely(() => sectionNavigation(lenis));
+
+    document.querySelectorAll('[data-network]').forEach((canvas) => safely(() => networkCanvas(canvas, { reducedMotion })));
 });

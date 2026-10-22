@@ -22,5 +22,6 @@ return [
     ],
     'floating_contact' => 'Contact us',
     'floating_whatsapp' => 'Chat with us on WhatsApp',
+    'sections_nav' => 'Page sections',
 
 ];
