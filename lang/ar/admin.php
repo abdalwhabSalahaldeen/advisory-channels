@@ -15,6 +15,12 @@ return [
         'lead' => ['singular' => 'طلب عميل', 'plural' => 'طلبات العملاء'],
         'job_application' => ['singular' => 'طلب توظيف', 'plural' => 'طلبات التوظيف'],
         'user' => ['singular' => 'مستخدم', 'plural' => 'المستخدمون'],
+        'doc' => ['singular' => 'صفحة قانونية', 'plural' => 'الصفحات القانونية'],
+        'faq' => ['singular' => 'سؤال', 'plural' => 'الأسئلة الشائعة'],
+        'faq_category' => ['singular' => 'تصنيف', 'plural' => 'تصنيفات الأسئلة'],
+        'testimonial' => ['singular' => 'رأي عميل', 'plural' => 'آراء العملاء'],
+        'partner' => ['singular' => 'شريك', 'plural' => 'الشركاء والعملاء'],
+        'subscriber' => ['singular' => 'مشترك', 'plural' => 'المشتركون في النشرة'],
     ],
 
     'sections' => [
@@ -73,6 +79,16 @@ return [
         'password' => 'كلمة المرور',
         'is_admin' => 'صلاحية الدخول للوحة التحكم',
         'item' => 'عنصر',
+        'question' => 'السؤال',
+        'answer' => 'الإجابة',
+        'category' => 'التصنيف',
+        'faqs_count' => 'عدد الأسئلة',
+        'position' => 'المنصب / الجهة',
+        'quote' => 'نص الرأي',
+        'avatar' => 'الصورة الشخصية',
+        'logo' => 'الشعار',
+        'url' => 'الموقع الإلكتروني',
+        'updated_at' => 'آخر تحديث',
     ],
 
     'icons' => [
@@ -87,6 +103,8 @@ return [
     'general_application' => 'طلب عام',
     'download_cv' => 'تحميل السيرة الذاتية',
     'add_item' => 'إضافة عنصر',
+    'export_csv' => 'تصدير CSV',
+    'no_category' => 'بدون تصنيف',
 
     'settings' => [
         'title' => 'إعدادات الموقع',
@@ -96,7 +114,6 @@ return [
             'general' => 'عام والتواصل',
             'home' => 'الصفحة الرئيسية',
             'about' => 'من نحن',
-            'legal' => 'القانونية',
             'seo' => 'SEO',
         ],
         'fields' => [
@@ -123,7 +140,6 @@ return [
             'about_team' => 'عن الفريق',
             'mission' => 'الرسالة',
             'vision' => 'الرؤية',
-            'privacy_policy' => 'سياسة الخصوصية',
             'meta_description' => 'الوصف الافتراضي في محركات البحث',
         ],
     ],

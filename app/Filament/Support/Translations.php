@@ -36,12 +36,12 @@ class Translations
     }
 
     /**
-     * A required "title.{locale}" input. The English one fills the slug while the record is being created.
+     * A required "{attribute}.{locale}" input. The English one fills the slug while the record is being created.
      */
-    public static function sluggedTitle(string $locale): TextInput
+    public static function sluggedTitle(string $locale, string $attribute = 'title'): TextInput
     {
-        $input = TextInput::make("title.{$locale}")
-            ->label(__('admin.fields.title'))
+        $input = TextInput::make("{$attribute}.{$locale}")
+            ->label(__("admin.fields.{$attribute}"))
             ->required()
             ->maxLength(255);
 

@@ -10,7 +10,7 @@ class SitemapController extends Controller
 {
     public function __invoke(): Response
     {
-        $pages = collect(['home', 'about', 'services.index', 'saudi-gate', 'careers.index', 'request-service', 'contact', 'privacy'])
+        $pages = collect(['home', 'about', 'services.index', 'saudi-gate', 'careers.index', 'faqs', 'request-service', 'contact', 'privacy-policy', 'terms-and-conditions'])
             ->map(fn (string $route) => ['route' => $route, 'parameters' => []]);
 
         $services = Service::query()->published()->get()

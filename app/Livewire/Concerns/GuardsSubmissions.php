@@ -30,7 +30,7 @@ trait GuardsSubmissions
 
         if (RateLimiter::tooManyAttempts($key, maxAttempts: 5)) {
             throw ValidationException::withMessages([
-                'form' => __('site.forms.too_many_attempts', ['seconds' => RateLimiter::availableIn($key)]),
+                'form' => __('forms.too_many_attempts', ['seconds' => RateLimiter::availableIn($key)]),
             ]);
         }
 

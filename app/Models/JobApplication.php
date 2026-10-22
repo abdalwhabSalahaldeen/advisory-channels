@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Facades\Storage;
 
 #[Fillable([
     'job_opening_id', 'status', 'full_name', 'email', 'phone', 'linkedin_url',
@@ -21,6 +22,12 @@ class JobApplication extends Model
      * reachable through the admin panel.
      */
     public const CV_DISK = 'local';
+
+    protected static function booted(): void
+    {
+        // The CV is personal data: it must not outlive the application (PDPL).
+        static::deleted(fn (JobApplication $application) => Storage::disk(self::CV_DISK)->delete($application->cv_path));
+    }
 
     /**
      * Get the attributes that should be cast.

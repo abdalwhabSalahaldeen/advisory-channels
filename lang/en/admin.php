@@ -15,6 +15,12 @@ return [
         'lead' => ['singular' => 'Lead', 'plural' => 'Leads'],
         'job_application' => ['singular' => 'Job application', 'plural' => 'Job applications'],
         'user' => ['singular' => 'User', 'plural' => 'Users'],
+        'doc' => ['singular' => 'Legal page', 'plural' => 'Legal pages'],
+        'faq' => ['singular' => 'FAQ', 'plural' => 'FAQs'],
+        'faq_category' => ['singular' => 'FAQ category', 'plural' => 'FAQ categories'],
+        'testimonial' => ['singular' => 'Testimonial', 'plural' => 'Testimonials'],
+        'partner' => ['singular' => 'Partner', 'plural' => 'Partners & clients'],
+        'subscriber' => ['singular' => 'Subscriber', 'plural' => 'Newsletter subscribers'],
     ],
 
     'sections' => [
@@ -73,6 +79,16 @@ return [
         'password' => 'Password',
         'is_admin' => 'Can access the admin panel',
         'item' => 'Item',
+        'question' => 'Question',
+        'answer' => 'Answer',
+        'category' => 'Category',
+        'faqs_count' => 'Questions',
+        'position' => 'Position / organization',
+        'quote' => 'Quote',
+        'avatar' => 'Photo',
+        'logo' => 'Logo',
+        'url' => 'Website',
+        'updated_at' => 'Last updated',
     ],
 
     'icons' => [
@@ -87,6 +103,8 @@ return [
     'general_application' => 'General application',
     'download_cv' => 'Download CV',
     'add_item' => 'Add item',
+    'export_csv' => 'Export CSV',
+    'no_category' => 'Uncategorized',
 
     'settings' => [
         'title' => 'Site settings',
@@ -96,7 +114,6 @@ return [
             'general' => 'General & contact',
             'home' => 'Home page',
             'about' => 'About us',
-            'legal' => 'Legal',
             'seo' => 'SEO',
         ],
         'fields' => [
@@ -123,7 +140,6 @@ return [
             'about_team' => 'About the team',
             'mission' => 'Mission',
             'vision' => 'Vision',
-            'privacy_policy' => 'Privacy policy',
             'meta_description' => 'Default meta description',
         ],
     ],

@@ -3,6 +3,8 @@
 namespace App\Providers\Filament;
 
 use App\Filament\NavigationGroup;
+use Filament\Auth\MultiFactor\App\AppAuthentication;
+use Filament\Auth\MultiFactor\Email\EmailAuthentication;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -26,8 +28,16 @@ class AdminPanelProvider extends PanelProvider
         return $panel
             ->default()
             ->id('admin')
-            ->path('admin')
+            ->path('management')
             ->login()
+            ->profile(isSimple: false)
+            // Every panel user must sign in with a second factor: an emailed code or an authenticator app.
+            ->multiFactorAuthentication([
+                EmailAuthentication::make(),
+                AppAuthentication::make()
+                    ->brandName(config('app.name'))
+                    ->recoverable(),
+            ], isRequired: true)
             ->brandName(fn (): string => config('app.name'))
             ->colors([
                 'primary' => Color::hex('#017337'),

@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+use App\Filament\Resources\Leads\LeadResource;
 use App\Models\Lead;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -47,7 +48,7 @@ class NewLeadReceived extends Notification implements ShouldQueue
             'country' => $lead->country,
             'service' => $lead->service?->tr('title'),
             'packages' => $lead->selectedPackages()->map->tr('title')->implode('، '),
-            'timeline' => $lead->timeline ? __("site.forms.timelines.{$lead->timeline}") : null,
+            'timeline' => $lead->timeline ? __("forms.timelines.{$lead->timeline}") : null,
             'message' => $lead->message,
         ] as $field => $value) {
             if (filled($value)) {
@@ -57,6 +58,6 @@ class NewLeadReceived extends Notification implements ShouldQueue
 
         return $message
             ->replyTo($lead->email, $lead->full_name)
-            ->action(__('notifications.lead.action'), url("/admin/leads/{$lead->getKey()}"));
+            ->action(__('notifications.lead.action'), LeadResource::getUrl('view', ['record' => $lead], panel: 'admin'));
     }
 }

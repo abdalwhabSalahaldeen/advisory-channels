@@ -1,0 +1,45 @@
+<?php
+
+return [
+
+    'step' => 'Step :current of :total',
+    'steps' => [
+        'Service',
+        'Details',
+        'Contact',
+    ],
+    'choose_service' => 'Which service do you need?',
+    'not_sure' => 'Not sure yet',
+    'not_sure_text' => 'Help me find the right service',
+    'choose_packages' => 'Which stages are you interested in?',
+    'full_name' => 'Full name',
+    'company' => 'Organization / company',
+    'job_title' => 'Job title',
+    'email' => 'Email',
+    'phone' => 'Phone number',
+    'country' => 'Country',
+    'timeline' => 'When do you need to start?',
+    'timelines' => [
+        'asap' => 'As soon as possible',
+        '1-3_months' => 'Within 1-3 months',
+        '3-6_months' => 'Within 3-6 months',
+        'exploring' => 'Just exploring options',
+    ],
+    'message' => 'Your message',
+    'message_hint' => 'Briefly describe the challenge or goal',
+    'linkedin' => 'LinkedIn profile URL',
+    'cv' => 'CV',
+    'cv_hint' => 'PDF or Word, up to 5 MB',
+    'cv_choose' => 'Choose a file',
+    'cv_uploading' => 'Uploading...',
+    'cover_letter' => 'Why do you want to join us?',
+    'optional' => 'Optional',
+    'consent' => 'I agree to the processing of my data under the :link.',
+    'consent_link' => 'Privacy Policy',
+    'too_many_attempts' => 'Too many attempts. Please try again in :seconds seconds.',
+    'success_title' => 'Thank you!',
+    'success_lead' => 'We have received your request and one of our consultants will be in touch soon.',
+    'success_application' => 'We have received your CV. Our HR team will contact you if your experience is a match.',
+    'send_another' => 'Send another request',
+
+];

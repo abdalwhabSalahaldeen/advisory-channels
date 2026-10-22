@@ -9,7 +9,6 @@ use BackedEnum;
 use Filament\Actions\Action;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Repeater;
-use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
@@ -76,14 +75,6 @@ class ManageSiteSettings extends Page
                         Tab::make(__('admin.settings.tabs.about'))
                             ->icon(Heroicon::OutlinedInformationCircle)
                             ->schema($this->aboutTab()),
-                        Tab::make(__('admin.settings.tabs.legal'))
-                            ->icon(Heroicon::OutlinedShieldCheck)
-                            ->schema([
-                                Translations::tabs(fn (string $locale) => [
-                                    RichEditor::make("privacy_policy.{$locale}")
-                                        ->label(__('admin.settings.fields.privacy_policy')),
-                                ]),
-                            ]),
                         Tab::make(__('admin.settings.tabs.seo'))
                             ->icon(Heroicon::OutlinedMagnifyingGlass)
                             ->schema([

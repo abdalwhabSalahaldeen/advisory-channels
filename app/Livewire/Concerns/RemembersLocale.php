@@ -17,9 +17,16 @@ trait RemembersLocale
     public function mountRemembersLocale(): void
     {
         $this->locale = app()->getLocale();
+
+        $this->applyLocale();
     }
 
     public function hydrateRemembersLocale(): void
+    {
+        $this->applyLocale();
+    }
+
+    protected function applyLocale(): void
     {
         if (array_key_exists($this->locale, config('site.locales'))) {
             app()->setLocale($this->locale);

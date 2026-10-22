@@ -55,12 +55,12 @@ class RequestServiceForm extends Component
 
     public bool $submitted = false;
 
-    public function mount(?string $service = null): void
+    public function mount(?string $preselect = null): void
     {
         $this->sourceUrl = url()->current();
 
-        if ($service && $this->services->contains('slug', $service)) {
-            $this->service = $service;
+        if ($preselect && $this->services->contains('slug', $preselect)) {
+            $this->service = $preselect;
         }
     }
 

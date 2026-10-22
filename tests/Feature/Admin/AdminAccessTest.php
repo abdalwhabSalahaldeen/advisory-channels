@@ -13,21 +13,33 @@ class AdminAccessTest extends AdminTestCase
     public static function adminPages(): array
     {
         return [
-            'dashboard' => ['/admin'],
-            'services' => ['/admin/services'],
-            'services create' => ['/admin/services/create'],
-            'services edit' => ['/admin/services/strategy-growth/edit'],
-            'gate packages' => ['/admin/gate-packages'],
-            'gate packages edit' => ['/admin/gate-packages/1/edit'],
-            'job openings' => ['/admin/job-openings'],
-            'job openings edit' => ['/admin/job-openings/path-to-consultancy/edit'],
-            'leads' => ['/admin/leads'],
-            'lead view' => ['/admin/leads/1'],
-            'lead edit' => ['/admin/leads/1/edit'],
-            'job applications' => ['/admin/job-applications'],
-            'job application view' => ['/admin/job-applications/1'],
-            'users' => ['/admin/users'],
-            'site settings' => ['/admin/site-settings'],
+            'dashboard' => ['/management'],
+            'services' => ['/management/services'],
+            'services create' => ['/management/services/create'],
+            'services edit' => ['/management/services/strategy-growth/edit'],
+            'gate packages' => ['/management/gate-packages'],
+            'gate packages edit' => ['/management/gate-packages/1/edit'],
+            'job openings' => ['/management/job-openings'],
+            'job openings edit' => ['/management/job-openings/path-to-consultancy/edit'],
+            'leads' => ['/management/leads'],
+            'lead view' => ['/management/leads/1'],
+            'lead edit' => ['/management/leads/1/edit'],
+            'job applications' => ['/management/job-applications'],
+            'job application view' => ['/management/job-applications/1'],
+            'docs' => ['/management/docs'],
+            'doc edit' => ['/management/docs/1/edit'],
+            'faqs' => ['/management/faqs'],
+            'faqs create' => ['/management/faqs/create'],
+            'faq edit' => ['/management/faqs/1/edit'],
+            'faq categories' => ['/management/faq-categories'],
+            'testimonials' => ['/management/testimonials'],
+            'testimonial edit' => ['/management/testimonials/1/edit'],
+            'partners' => ['/management/partners'],
+            'partner edit' => ['/management/partners/1/edit'],
+            'subscribers' => ['/management/subscribers'],
+            'users' => ['/management/users'],
+            'profile' => ['/management/profile'],
+            'site settings' => ['/management/site-settings'],
         ];
     }
 
@@ -52,17 +64,30 @@ class AdminAccessTest extends AdminTestCase
     {
         $user = User::factory()->create(['is_admin' => false]);
 
-        $this->actingAs($user)->get('/admin')->assertForbidden();
+        $this->actingAs($user)->get('/management')->assertForbidden();
     }
 
     public function test_guests_are_redirected_to_login(): void
     {
-        $this->get('/admin')->assertRedirect('/admin/login');
+        $this->get('/management')->assertRedirect('/management/login');
     }
 
-    public function test_leads_cannot_be_created_from_the_panel(): void
+    /**
+     * @return array<string, array{string}>
+     */
+    public static function pagesWithoutCreate(): array
     {
-        $this->actingAs($this->admin)->get('/admin/leads/create')->assertNotFound();
+        return [
+            'leads' => ['/management/leads/create'],
+            'job applications' => ['/management/job-applications/create'],
+            'docs' => ['/management/docs/create'],
+        ];
+    }
+
+    #[DataProvider('pagesWithoutCreate')]
+    public function test_records_that_come_from_the_site_cannot_be_created_from_the_panel(string $url): void
+    {
+        $this->actingAs($this->admin)->get($url)->assertNotFound();
     }
 
     protected function seedRecords(): void
@@ -72,5 +97,10 @@ class AdminAccessTest extends AdminTestCase
         $job = $this->createJobOpening();
         $this->createLead(['service_id' => $service->id]);
         $this->createJobApplication(['job_opening_id' => $job->id]);
+        $this->createDoc();
+        $this->createFaq();
+        $this->createTestimonial();
+        $this->createPartner();
+        $this->createSubscriber();
     }
 }

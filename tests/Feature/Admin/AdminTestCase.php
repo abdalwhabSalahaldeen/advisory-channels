@@ -4,11 +4,17 @@ namespace Tests\Feature\Admin;
 
 use App\Enums\JobType;
 use App\Enums\LeadType;
+use App\Models\Doc;
+use App\Models\Faq;
+use App\Models\FaqCategory;
 use App\Models\GatePackage;
 use App\Models\JobApplication;
 use App\Models\JobOpening;
 use App\Models\Lead;
+use App\Models\Partner;
 use App\Models\Service;
+use App\Models\Subscriber;
+use App\Models\Testimonial;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -23,7 +29,8 @@ abstract class AdminTestCase extends TestCase
     {
         parent::setUp();
 
-        $this->admin = User::factory()->create(['is_admin' => true]);
+        // Two-factor authentication is required for panel users; tests act as an admin who has set it up.
+        $this->admin = User::factory()->create(['is_admin' => true, 'has_email_authentication' => true]);
     }
 
     protected function createService(array $attributes = []): Service
@@ -80,6 +87,53 @@ abstract class AdminTestCase extends TestCase
             'email' => 'omar@example.com',
             'phone' => '+966500000000',
             'cv_path' => 'cvs/omar.pdf',
+            'locale' => 'ar',
+            'consented_at' => now(),
+            ...$attributes,
+        ]);
+    }
+
+    protected function createDoc(): Doc
+    {
+        return Doc::query()->create([
+            'slug' => Doc::PRIVACY_POLICY,
+            'title' => ['ar' => 'سياسة الخصوصية', 'en' => 'Privacy Policy'],
+            'body' => ['ar' => '<p>نص</p>', 'en' => '<p>Text</p>'],
+        ]);
+    }
+
+    protected function createFaq(): Faq
+    {
+        $category = FaqCategory::query()->create([
+            'slug' => 'general',
+            'name' => ['ar' => 'عام', 'en' => 'General'],
+        ]);
+
+        return Faq::query()->create([
+            'faq_category_id' => $category->id,
+            'question' => ['ar' => 'ما هي البوابة السعودية؟', 'en' => 'What is Saudi Gate?'],
+            'answer' => ['ar' => 'حل متكامل لدخول السوق.', 'en' => 'A 360° market-entry solution.'],
+        ]);
+    }
+
+    protected function createTestimonial(): Testimonial
+    {
+        return Testimonial::query()->create([
+            'name' => 'Khalid',
+            'position' => ['ar' => 'مدير تنفيذي', 'en' => 'CEO'],
+            'quote' => ['ar' => 'تجربة رائعة', 'en' => 'Great experience'],
+        ]);
+    }
+
+    protected function createPartner(): Partner
+    {
+        return Partner::query()->create(['name' => 'Acme', 'logo' => 'partners/acme.svg', 'url' => 'https://acme.test']);
+    }
+
+    protected function createSubscriber(array $attributes = []): Subscriber
+    {
+        return Subscriber::query()->create([
+            'email' => 'reader@example.com',
             'locale' => 'ar',
             'consented_at' => now(),
             ...$attributes,
