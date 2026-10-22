@@ -1,0 +1,252 @@
+<?php
+
+namespace App\Filament\Pages;
+
+use App\Filament\NavigationGroup;
+use App\Filament\Support\Translations;
+use App\Support\SiteSettings;
+use BackedEnum;
+use Filament\Actions\Action;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Repeater;
+use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
+use Filament\Notifications\Notification;
+use Filament\Pages\Page;
+use Filament\Schemas\Components\Actions;
+use Filament\Schemas\Components\Component;
+use Filament\Schemas\Components\EmbeddedSchema;
+use Filament\Schemas\Components\Form;
+use Filament\Schemas\Components\Grid;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Tabs;
+use Filament\Schemas\Components\Tabs\Tab;
+use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
+use UnitEnum;
+
+/**
+ * Edits the key/value rows behind App\Support\SiteSettings.
+ */
+class ManageSiteSettings extends Page
+{
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedCog6Tooth;
+
+    protected static string|UnitEnum|null $navigationGroup = NavigationGroup::Settings;
+
+    protected static ?int $navigationSort = 1;
+
+    protected static ?string $slug = 'site-settings';
+
+    /**
+     * @var array<string, mixed>|null
+     */
+    public ?array $data = [];
+
+    public static function getNavigationLabel(): string
+    {
+        return __('admin.settings.title');
+    }
+
+    public function getTitle(): string
+    {
+        return __('admin.settings.title');
+    }
+
+    public function mount(SiteSettings $settings): void
+    {
+        $this->form->fill($settings->all());
+    }
+
+    public function form(Schema $schema): Schema
+    {
+        return $schema
+            ->statePath('data')
+            ->components([
+                Tabs::make()
+                    ->persistTabInQueryString()
+                    ->tabs([
+                        Tab::make(__('admin.settings.tabs.general'))
+                            ->icon(Heroicon::OutlinedBuildingOffice2)
+                            ->schema($this->generalTab()),
+                        Tab::make(__('admin.settings.tabs.home'))
+                            ->icon(Heroicon::OutlinedHome)
+                            ->schema($this->homeTab()),
+                        Tab::make(__('admin.settings.tabs.about'))
+                            ->icon(Heroicon::OutlinedInformationCircle)
+                            ->schema($this->aboutTab()),
+                        Tab::make(__('admin.settings.tabs.legal'))
+                            ->icon(Heroicon::OutlinedShieldCheck)
+                            ->schema([
+                                Translations::tabs(fn (string $locale) => [
+                                    RichEditor::make("privacy_policy.{$locale}")
+                                        ->label(__('admin.settings.fields.privacy_policy')),
+                                ]),
+                            ]),
+                        Tab::make(__('admin.settings.tabs.seo'))
+                            ->icon(Heroicon::OutlinedMagnifyingGlass)
+                            ->schema([
+                                Translations::tabs(fn (string $locale) => [
+                                    Textarea::make("meta_description.{$locale}")
+                                        ->label(__('admin.settings.fields.meta_description'))
+                                        ->rows(3)
+                                        ->maxLength(300),
+                                ]),
+                            ]),
+                    ]),
+            ]);
+    }
+
+    public function content(Schema $schema): Schema
+    {
+        return $schema
+            ->components([
+                Form::make([EmbeddedSchema::make('form')])
+                    ->id('form')
+                    ->livewireSubmitHandler('save')
+                    ->footer([
+                        Actions::make([
+                            Action::make('save')
+                                ->label(__('admin.settings.save'))
+                                ->submit('save')
+                                ->keyBindings(['mod+s']),
+                        ])->key('form-actions'),
+                    ]),
+            ]);
+    }
+
+    public function save(SiteSettings $settings): void
+    {
+        $settings->set($this->form->getState());
+
+        Notification::make()
+            ->success()
+            ->title(__('admin.settings.saved'))
+            ->send();
+    }
+
+    /**
+     * @return array<Component>
+     */
+    protected function generalTab(): array
+    {
+        return [
+            Section::make()
+                ->schema([
+                    Translations::tabs(fn (string $locale) => [
+                        TextInput::make("site_name.{$locale}")
+                            ->label(__('admin.settings.fields.site_name'))
+                            ->required()
+                            ->maxLength(255),
+                        Textarea::make("address.{$locale}")
+                            ->label(__('admin.settings.fields.address'))
+                            ->rows(2),
+                    ]),
+                    FileUpload::make('site_logo')
+                        ->label(__('admin.settings.fields.site_logo'))
+                        ->image()
+                        ->acceptedFileTypes(['image/svg+xml', 'image/png', 'image/webp', 'image/jpeg'])
+                        ->disk('public')
+                        ->directory('branding'),
+                ]),
+            Section::make(__('admin.sections.contact'))
+                ->schema([
+                    Grid::make(['md' => 2])
+                        ->schema([
+                            TextInput::make('contact_email')
+                                ->label(__('admin.settings.fields.contact_email'))
+                                ->email()
+                                ->required(),
+                            TextInput::make('notification_email')
+                                ->label(__('admin.settings.fields.notification_email'))
+                                ->helperText(__('admin.settings.fields.notification_email_help'))
+                                ->email(),
+                            TextInput::make('contact_phone')
+                                ->label(__('admin.settings.fields.contact_phone'))
+                                ->tel(),
+                            TextInput::make('whatsapp')
+                                ->label(__('admin.settings.fields.whatsapp'))
+                                ->tel(),
+                            TextInput::make('linkedin_url')
+                                ->label(__('admin.settings.fields.linkedin_url'))
+                                ->url(),
+                            TextInput::make('x_url')
+                                ->label(__('admin.settings.fields.x_url'))
+                                ->url(),
+                            TextInput::make('map_url')
+                                ->label(__('admin.settings.fields.map_url'))
+                                ->url(),
+                            TextInput::make('request_service_url')
+                                ->label(__('admin.settings.fields.request_service_url'))
+                                ->helperText(__('admin.settings.fields.request_service_url_help'))
+                                ->url(),
+                        ]),
+                ]),
+        ];
+    }
+
+    /**
+     * @return array<Component>
+     */
+    protected function homeTab(): array
+    {
+        return [
+            Translations::tabs(fn (string $locale) => [
+                TextInput::make("hero_title.{$locale}")
+                    ->label(__('admin.settings.fields.hero_title'))
+                    ->required()
+                    ->maxLength(255),
+                Textarea::make("hero_subtitle.{$locale}")
+                    ->label(__('admin.settings.fields.hero_subtitle'))
+                    ->rows(3),
+                Textarea::make("home_intro.{$locale}")
+                    ->label(__('admin.settings.fields.home_intro'))
+                    ->rows(4),
+            ]),
+            Repeater::make('home_stats')
+                ->label(__('admin.settings.fields.home_stats'))
+                ->schema([
+                    TextInput::make('value')
+                        ->label(__('admin.settings.fields.stat_value'))
+                        ->required()
+                        ->maxLength(20),
+                    ...collect(config('site.locales'))
+                        ->map(fn (array $locale, string $key) => TextInput::make("label.{$key}")
+                            ->label(__('admin.settings.fields.stat_label').' — '.$locale['name'])
+                            ->extraInputAttributes(['dir' => $locale['dir']])
+                            ->required())
+                        ->values()
+                        ->all(),
+                ])
+                ->columns(3)
+                ->defaultItems(0)
+                ->addActionLabel(__('admin.add_item'))
+                ->reorderable()
+                ->columnSpanFull(),
+        ];
+    }
+
+    /**
+     * @return array<Component>
+     */
+    protected function aboutTab(): array
+    {
+        return [
+            Translations::tabs(fn (string $locale) => [
+                Textarea::make("about_story.{$locale}")
+                    ->label(__('admin.settings.fields.about_story'))
+                    ->rows(5),
+                Textarea::make("about_team.{$locale}")
+                    ->label(__('admin.settings.fields.about_team'))
+                    ->rows(4),
+                Textarea::make("mission.{$locale}")
+                    ->label(__('admin.settings.fields.mission'))
+                    ->rows(3),
+                Textarea::make("vision.{$locale}")
+                    ->label(__('admin.settings.fields.vision'))
+                    ->rows(3),
+            ]),
+        ];
+    }
+}

@@ -1,9 +1,182 @@
 @import 'tailwindcss';
+@import 'swiper/css';
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
 
+@custom-variant rtl (&:where([dir="rtl"], [dir="rtl"] *));
+@custom-variant ltr (&:where([dir="ltr"], [dir="ltr"] *));
+
 @theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-sans: var(--font-manrope), var(--font-tajawal), ui-sans-serif, system-ui, sans-serif;
+    --font-arabic: var(--font-tajawal), ui-sans-serif, system-ui, sans-serif;
+    --font-latin: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+
+    /* Brand green, built around the logo's #017337 (brand-700). */
+    --color-brand-50: #ecfdf3;
+    --color-brand-100: #d1fae1;
+    --color-brand-200: #a7f0c6;
+    --color-brand-300: #6ee0a4;
+    --color-brand-400: #34c77d;
+    --color-brand-500: #10a95f;
+    --color-brand-600: #058a4b;
+    --color-brand-700: #017337;
+    --color-brand-800: #065b30;
+    --color-brand-900: #064a29;
+    --color-brand-950: #022a16;
+
+    /* Green-tinted blacks for the dark sections. */
+    --color-ink-600: #26332d;
+    --color-ink-700: #1a2420;
+    --color-ink-800: #111816;
+    --color-ink-900: #0a0f0d;
+    --color-ink-950: #050807;
+
+    /* Warm sand accent, used sparingly for premium touches. */
+    --color-sand-100: #f6f0e4;
+    --color-sand-300: #e6d4ad;
+    --color-sand-500: #c9a45c;
+
+    --color-paper: #f6f7f4;
+
+    --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@layer base {
+    html {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        text-rendering: optimizeLegibility;
+    }
+
+    [dir='rtl'] body {
+        font-family: var(--font-arabic);
+    }
+
+    body {
+        @apply bg-paper text-ink-900;
+    }
+
+    ::selection {
+        @apply bg-brand-600 text-white;
+    }
+
+    :focus-visible {
+        @apply outline-2 outline-offset-2 outline-brand-500;
+    }
+
+    [x-cloak] {
+        display: none !important;
+    }
+}
+
+@layer components {
+    .container-site {
+        @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
+    }
+
+    .eyebrow {
+        @apply inline-flex items-center gap-2 text-xs font-bold tracking-[0.2em] uppercase text-brand-600;
+    }
+
+    [dir='rtl'] .eyebrow {
+        @apply tracking-normal text-sm;
+    }
+
+    .eyebrow::before {
+        content: '';
+        @apply inline-block h-px w-8 bg-current;
+    }
+
+    /* The bracket motif from the logo: an L-shaped corner at top-start and bottom-end. */
+    .bracket-frame {
+        @apply relative;
+    }
+
+    .bracket-frame::before,
+    .bracket-frame::after {
+        content: '';
+        @apply pointer-events-none absolute size-6 border-brand-500;
+    }
+
+    .bracket-frame::before {
+        @apply -start-3 -top-3 border-s-2 border-t-2;
+    }
+
+    .bracket-frame::after {
+        @apply -end-3 -bottom-3 border-e-2 border-b-2;
+    }
+
+    .prose-site {
+        @apply max-w-none text-lg leading-relaxed text-ink-700;
+    }
+
+    .prose-site > * + * {
+        @apply mt-5;
+    }
+
+    .prose-site h2 {
+        @apply mt-10 text-2xl font-bold text-ink-900;
+    }
+
+    .prose-site h3 {
+        @apply mt-8 text-xl font-bold text-ink-900;
+    }
+
+    .prose-site ul {
+        @apply list-disc space-y-2 ps-6 marker:text-brand-600;
+    }
+
+    .prose-site ol {
+        @apply list-decimal space-y-2 ps-6 marker:text-brand-600;
+    }
+
+    .prose-site a {
+        @apply font-semibold text-brand-700 underline decoration-brand-300 underline-offset-4 hover:decoration-brand-700;
+    }
+
+    .prose-site strong {
+        @apply font-bold text-ink-900;
+    }
+
+    .form-label {
+        @apply mb-2 block text-sm font-semibold text-ink-800;
+    }
+
+    .form-input {
+        @apply block w-full rounded-xl border border-ink-900/10 bg-white px-4 py-3 text-base text-ink-900 shadow-xs transition placeholder:text-ink-900/35 focus:border-brand-500 focus:ring-4 focus:ring-brand-500/15 focus:outline-none;
+    }
+
+    .form-input[aria-invalid='true'] {
+        @apply border-red-500 focus:ring-red-500/15;
+    }
+
+    .form-error {
+        @apply mt-2 text-sm font-medium text-red-600;
+    }
+
+    .card-lift {
+        @apply transition duration-500 ease-out-expo hover:-translate-y-1 hover:shadow-2xl hover:shadow-brand-950/10;
+    }
+
+    .grid-lines {
+        background-image:
+            linear-gradient(to right, rgb(255 255 255 / 0.05) 1px, transparent 1px),
+            linear-gradient(to bottom, rgb(255 255 255 / 0.05) 1px, transparent 1px);
+        background-size: 64px 64px;
+    }
+
+    .grid-lines-dark {
+        background-image:
+            linear-gradient(to right, rgb(10 15 13 / 0.05) 1px, transparent 1px),
+            linear-gradient(to bottom, rgb(10 15 13 / 0.05) 1px, transparent 1px);
+        background-size: 64px 64px;
+    }
+}
+
+/* Hidden only while JS is running (html.js) and motion is allowed; app.js reveals it on scroll. */
+@media (prefers-reduced-motion: no-preference) {
+    .js [data-reveal] {
+        opacity: 0;
+    }
 }

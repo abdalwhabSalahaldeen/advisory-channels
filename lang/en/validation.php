@@ -181,8 +181,11 @@ return [
     */
 
     'custom' => [
-        'attribute-name' => [
-            'rule-name' => 'custom-message',
+        'service' => [
+            'required' => 'Please choose the service you need.',
+        ],
+        'packages' => [
+            'required' => 'Please choose at least one stage.',
         ],
     ],
 
@@ -197,6 +200,12 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+        'full_name' => 'full name',
+        'company' => 'organization',
+        'linkedin_url' => 'LinkedIn URL',
+        'cv' => 'CV',
+        'consent' => 'privacy policy',
+    ],
 
 ];
