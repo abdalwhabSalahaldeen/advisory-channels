@@ -56,8 +56,6 @@
         </div>
     </section>
 
-    <x-site.need-picker :services="$services" :packages="$packages" />
-
     {{-- 01 Intro statement --}}
     <section id="intro" class="py-28 sm:py-40">
         <div class="container-site grid gap-16 lg:grid-cols-12">

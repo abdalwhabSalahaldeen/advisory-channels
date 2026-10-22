@@ -66,31 +66,5 @@ return [
     'capabilities_title' => 'Specialized channels, solutions tailored to every client',
     'insights_eyebrow' => 'Insights',
     'insights_title' => 'Thinking from our team',
-    'picker' => [
-        'eyebrow' => 'Start here',
-        'title' => 'How can we help you?',
-        'i_am' => 'I am',
-        'i_need' => 'and I need',
-        'choose' => 'Choose',
-        'result' => 'We recommend',
-        'audiences' => [
-            'government' => 'a government or semi-government entity',
-            'corporate' => 'a company or private enterprise',
-            'investor' => 'an international investor or startup',
-        ],
-        'needs' => [
-            'strategy' => 'a clear growth strategy',
-            'organization' => 'to restructure our organization and processes',
-            'transformation' => 'to lead a transformation program',
-            'outsourcing' => 'to outsource supporting operations',
-            'assess' => 'to assess my opportunity in the Saudi market',
-            'start' => 'to set up my company in the Kingdom',
-            'operate' => 'to run my business locally',
-            'grow' => 'to grow and expand in the Kingdom and the GCC',
-        ],
-        'cta_service' => 'Request this service',
-        'cta_gate' => 'Talk to the Saudi Gate team',
-        'learn_more' => 'Learn more',
-    ],
 
 ];

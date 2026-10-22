@@ -34,7 +34,7 @@
                     <a href="{{ $linkedin }}" target="_blank" rel="noopener" class="transition hover:text-gold-300" aria-label="LinkedIn"><x-ui.icon name="linkedin" class="size-3.5" /></a>
                 @endif
                 @if ($x = $site->get('x_url'))
-                    <a href="{{ $x }}" target="_blank" rel="noopener" class="transition hover:text-gold-300" aria-label="X"><x-ui.icon name="x" class="size-3" /></a>
+                    <a href="{{ $x }}" target="_blank" rel="noopener" class="transition hover:text-gold-300" aria-label="X"><x-ui.icon name="x" class="size-3.5" /></a>
                 @endif
                 @if ($otherLocale)
                     <a href="{{ $alternates[$otherLocale] }}" hreflang="{{ $otherLocale }}" lang="{{ $otherLocale }}" class="inline-flex items-center gap-2 border-s border-white/15 ps-6 font-medium text-white/80 transition hover:text-gold-300" aria-label="{{ __('header.switch_language_label') }}">

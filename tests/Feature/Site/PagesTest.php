@@ -100,15 +100,6 @@ class PagesTest extends TestCase
     }
 
     #[Test]
-    public function the_home_page_offers_the_audience_and_need_picker(): void
-    {
-        $this->get('/en')
-            ->assertSee('How can we help you?')
-            ->assertSee('id="picker-audience"', false)
-            ->assertSee('request-service?service=strategy-growth', false);
-    }
-
-    #[Test]
     public function the_bare_domain_opens_the_arabic_site(): void
     {
         $this->get('/')->assertRedirect('/ar');

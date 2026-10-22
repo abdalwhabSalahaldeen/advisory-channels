@@ -152,7 +152,6 @@ mindmap
 | **Insights** | Articles, reports, guides and news with featured story, type filter, reading time, author, share rail, reading progress bar, PDF download, related pieces and Article JSON-LD. Drafts (no date) and scheduled posts stay hidden | `InsightController`, `insights/*`, `Models/Insight` |
 | **Our Impact** | Metric-led case studies (challenge / approach / outcome, up to 4 metrics, clients described rather than named). The page and menu link appear only once a story is published | `CaseStudyController`, `impact/*` |
 | **Leadership** | Profiles on the About page, shown once added | `Models/TeamMember`, `pages/about.blade.php` |
-| **Audience & need picker** | "I am … and I need …" on the home page routes each visitor to the right service or Saudi Gate stage (Bain / Kearney) | `components/site/need-picker.blade.php` |
 | **Mega menus** | Services and Saudi Gate menus with descriptions (McKinsey / BCG), plus a utility bar | `inc/header.blade.php` |
 | **Contact routing & RFPs** | The contact form asks for the purpose first; tender invitations can attach the RFP document (private disk, deleted with the lead) | `Livewire/ContactForm` |
 | **Floating contact** | WhatsApp button when a number is set, otherwise a link to the contact page (the Drovox chat bubble) | `inc/floating-contact.blade.php` |
