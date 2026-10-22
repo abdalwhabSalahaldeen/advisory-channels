@@ -22,6 +22,5 @@ return [
     ],
     'floating_contact' => 'تواصل معنا',
     'floating_whatsapp' => 'راسلنا عبر واتساب',
-    'sections_nav' => 'أقسام الصفحة',
 
 ];

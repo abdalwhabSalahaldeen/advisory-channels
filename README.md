@@ -149,7 +149,6 @@ mindmap
 | **Spam protection** | Honeypot field and a limit of 5 submissions per IP every 10 minutes | `Livewire/Concerns/GuardsSubmissions` |
 | **Alerts** | Queued email to `notification_email` (site setting) or `LEADS_NOTIFY_EMAIL`, always in Arabic, with a link to the record | `Notifications/*`, `Support/LeadInbox` |
 | **SEO** | Per-page title and description, canonical and `hreflang` links, Organization JSON-LD, `/sitemap.xml` with both languages, 301 redirects from the old Wix URLs | `inc/head.blade.php`, `SitemapController`, `routes/web.php` |
-| **Section-by-section scrolling** | On desktop (mouse or trackpad, at least 1024px wide), one wheel gesture, Page Up / Page Down or Space moves exactly one section with an eased animation. A section taller than the screen scrolls normally until its end. Side dots show the current section and jump on click. Touch devices and visitors who prefer reduced motion keep normal scrolling | `resources/js/section-scroll.js`, `resources/js/section-dots.js` |
 | **Floating contact** | WhatsApp button when a number is set, otherwise a link to the contact page (the Drovox chat bubble) | `inc/floating-contact.blade.php` |
 
 ## 6. Routing Map
