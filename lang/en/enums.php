@@ -31,4 +31,11 @@ return [
         'internship' => 'Internship',
     ],
 
+    'insight_type' => [
+        'article' => 'Article',
+        'report' => 'Report',
+        'guide' => 'Guide',
+        'news' => 'News',
+    ],
+
 ];

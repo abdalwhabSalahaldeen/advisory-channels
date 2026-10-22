@@ -26,6 +26,15 @@ class AdminAccessTest extends AdminTestCase
             'lead edit' => ['/management/leads/1/edit'],
             'job applications' => ['/management/job-applications'],
             'job application view' => ['/management/job-applications/1'],
+            'insights' => ['/management/insights'],
+            'insights create' => ['/management/insights/create'],
+            'insight edit' => ['/management/insights/vision-2030-market-entry/edit'],
+            'team members' => ['/management/team-members'],
+            'team members create' => ['/management/team-members/create'],
+            'team member edit' => ['/management/team-members/1/edit'],
+            'case studies' => ['/management/case-studies'],
+            'case studies create' => ['/management/case-studies/create'],
+            'case study edit' => ['/management/case-studies/semi-government-transformation/edit'],
             'docs' => ['/management/docs'],
             'doc edit' => ['/management/docs/1/edit'],
             'faqs' => ['/management/faqs'],
@@ -102,5 +111,8 @@ class AdminAccessTest extends AdminTestCase
         $this->createTestimonial();
         $this->createPartner();
         $this->createSubscriber();
+        $author = $this->createTeamMember();
+        $this->createInsight(['service_id' => $service->id, 'author_id' => $author->id]);
+        $this->createCaseStudy(['service_id' => $service->id]);
     }
 }

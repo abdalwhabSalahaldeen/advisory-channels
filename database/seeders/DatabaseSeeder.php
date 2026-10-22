@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
             JobOpeningSeeder::class,
             DocSeeder::class,
             FaqSeeder::class,
+            InsightSeeder::class,
         ]);
 
         // Set ADMIN_EMAIL / ADMIN_PASSWORD in .env before seeding production.

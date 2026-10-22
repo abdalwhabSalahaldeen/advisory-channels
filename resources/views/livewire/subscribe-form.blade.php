@@ -1,6 +1,6 @@
 <div>
     @if ($submitted)
-        <p class="flex items-center gap-3 rounded-2xl border border-brand-500/30 bg-brand-500/10 px-5 py-4 font-semibold text-brand-300" role="status">
+        <p class="flex items-center gap-3 rounded-sm border border-brand-500/30 bg-brand-500/10 px-5 py-4 font-semibold text-brand-300" role="status">
             <x-ui.icon name="check" class="size-5" />
             {{ __('footer.subscribed') }}
         </p>

@@ -7,7 +7,7 @@
             <h3>
                 <button
                     type="button"
-                    class="flex w-full items-center justify-between gap-6 py-6 text-start text-lg font-bold text-ink-900 transition hover:text-brand-700"
+                    class="flex w-full items-center justify-between gap-6 py-6 text-start text-lg font-medium text-ink-900 transition hover:text-brand-700"
                     @click="open = open === {{ $faq->getKey() }} ? null : {{ $faq->getKey() }}"
                     :aria-expanded="(open === {{ $faq->getKey() }}).toString()"
                     aria-controls="faq-{{ $faq->getKey() }}"

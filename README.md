@@ -53,7 +53,7 @@ A server-rendered Laravel application that serves:
 | **CSS** | Tailwind CSS `^4` | Logical utilities (`ms-`, `ps-`, `start-`) so one codebase serves RTL and LTR |
 | **Motion** | GSAP + ScrollTrigger, Lenis | Scroll reveals, counters, Saudi Gate progress line; turned off when the visitor prefers reduced motion |
 | **Sliders** | Swiper | Saudi Gate stages and testimonials |
-| **Fonts** | Tajawal (Arabic), Manrope (Latin) | Self-hosted at build time by the Laravel Vite font plugin |
+| **Fonts** | IBM Plex Sans Arabic (the Royal Commission sites' typeface), IBM Plex Sans, Fraunces serif for English headlines | Self-hosted at build time by the Laravel Vite font plugin (+ fontaine fallbacks) |
 | **Build** | Vite | `vite.config.js` |
 | **Database** | SQLite locally, MySQL / PostgreSQL in production | |
 | **Testing** | PHPUnit | `tests/Feature/Site`, `tests/Feature/Admin` |
@@ -149,6 +149,12 @@ mindmap
 | **Spam protection** | Honeypot field and a limit of 5 submissions per IP every 10 minutes | `Livewire/Concerns/GuardsSubmissions` |
 | **Alerts** | Queued email to `notification_email` (site setting) or `LEADS_NOTIFY_EMAIL`, always in Arabic, with a link to the record | `Notifications/*`, `Support/LeadInbox` |
 | **SEO** | Per-page title and description, canonical and `hreflang` links, Organization JSON-LD, `/sitemap.xml` with both languages, 301 redirects from the old Wix URLs | `inc/head.blade.php`, `SitemapController`, `routes/web.php` |
+| **Insights** | Articles, reports, guides and news with featured story, type filter, reading time, author, share rail, reading progress bar, PDF download, related pieces and Article JSON-LD. Drafts (no date) and scheduled posts stay hidden | `InsightController`, `insights/*`, `Models/Insight` |
+| **Our Impact** | Metric-led case studies (challenge / approach / outcome, up to 4 metrics, clients described rather than named). The page and menu link appear only once a story is published | `CaseStudyController`, `impact/*` |
+| **Leadership** | Profiles on the About page, shown once added | `Models/TeamMember`, `pages/about.blade.php` |
+| **Audience & need picker** | "I am … and I need …" on the home page routes each visitor to the right service or Saudi Gate stage (Bain / Kearney) | `components/site/need-picker.blade.php` |
+| **Mega menus** | Services and Saudi Gate menus with descriptions (McKinsey / BCG), plus a utility bar | `inc/header.blade.php` |
+| **Contact routing & RFPs** | The contact form asks for the purpose first; tender invitations can attach the RFP document (private disk, deleted with the lead) | `Livewire/ContactForm` |
 | **Floating contact** | WhatsApp button when a number is set, otherwise a link to the contact page (the Drovox chat bubble) | `inc/floating-contact.blade.php` |
 
 ## 6. Routing Map
@@ -212,9 +218,10 @@ npm run dev     # Vite dev server with hot reload
 npm run build   # production build into public/build
 ```
 
-- Brand tokens live in `resources/css/app.css`: brand green `#017337` (`brand-700`), the `ink-*`
-  near-blacks and the `sand-*` premium accent.
-- The bracket motif from the logo is the `.bracket-frame` class.
+- Brand tokens live in `resources/css/app.css`: brand green `#017337` (`brand-700`), deep royal greens
+  (`forest-*`), desert sand (`sand-*`) and gold (`gold-*`) for fine details.
+- `.heading-display` gives the light, large headline style; `[data-split]` headings rise line by line.
+- `.pattern-star` is the Najdi-inspired eight-point star lattice; `.bracket-frame` is the logo's bracket motif in gold.
 
 ## 11. Testing
 
@@ -244,6 +251,9 @@ php artisan test
 - A review of all the Arabic copy, which was drafted from the English site.
 - Phone, WhatsApp, address and map link.
 - Real testimonials and partner logos. Both sections stay hidden until they have content.
+- Case studies, leadership profiles and photos. Each section stays hidden until it has content.
+- Hero and about photography (*Site settings → Home / About*). Until then the design uses its own patterns.
+- A review of the three launch insights, which were written from the site's existing copy.
 
 ---
 

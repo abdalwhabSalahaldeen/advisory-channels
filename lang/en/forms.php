@@ -41,5 +41,15 @@ return [
     'success_lead' => 'We have received your request and one of our consultants will be in touch soon.',
     'success_application' => 'We have received your CV. Our HR team will contact you if your experience is a match.',
     'send_another' => 'Send another request',
+    'purpose' => 'How can we help?',
+    'purposes' => [
+        'engage' => 'I want to engage you for a service',
+        'rfp' => 'Invitation to tender / RFP',
+        'saudi_gate' => 'Entering the Saudi market',
+        'partnership' => 'Partnership or collaboration',
+        'other' => 'Another enquiry',
+    ],
+    'attachment' => 'RFP document or attachments',
+    'attachment_hint' => 'PDF, Word or ZIP, up to 10 MB',
 
 ];

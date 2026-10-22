@@ -25,6 +25,8 @@ return [
         'packages' => 'Stages',
         'timeline' => 'Timeline',
         'message' => 'Message',
+        'purpose' => 'Purpose',
+        'attachment' => 'Attachment',
     ],
 
 ];

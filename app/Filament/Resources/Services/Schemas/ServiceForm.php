@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Services\Schemas;
 
+use App\Filament\Support\Icons;
 use App\Filament\Support\Translations;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\RichEditor;
@@ -44,7 +45,7 @@ class ServiceForm
                             ->extraInputAttributes(['dir' => 'ltr']),
                         Select::make('icon')
                             ->label(__('admin.fields.icon'))
-                            ->options(static::iconOptions()),
+                            ->options(Icons::options(['compass', 'network', 'refresh', 'layers', 'chart', 'shield'])),
                         FileUpload::make('image')
                             ->label(__('admin.fields.image'))
                             ->image()
@@ -75,15 +76,5 @@ class ServiceForm
                     ->columnSpanFull(),
             ])
             ->columns(['lg' => 3]);
-    }
-
-    /**
-     * @return array<string, string>
-     */
-    public static function iconOptions(): array
-    {
-        return collect(['compass', 'network', 'refresh', 'layers', 'chart', 'shield'])
-            ->mapWithKeys(fn (string $icon) => [$icon => __("admin.icons.{$icon}")])
-            ->all();
     }
 }

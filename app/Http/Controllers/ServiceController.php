@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CaseStudy;
+use App\Models\Insight;
 use App\Models\Service;
 use Illuminate\Contracts\View\View;
 
@@ -21,6 +23,8 @@ class ServiceController extends Controller
         return view('services.show', [
             'service' => $service,
             'otherServices' => Service::query()->published()->whereKeyNot($service->getKey())->get(),
+            'insights' => Insight::query()->published()->whereBelongsTo($service)->limit(3)->get(),
+            'caseStudies' => CaseStudy::query()->published()->whereBelongsTo($service)->limit(2)->get(),
         ]);
     }
 }

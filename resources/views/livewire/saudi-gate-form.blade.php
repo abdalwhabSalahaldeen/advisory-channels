@@ -9,7 +9,7 @@
                     @foreach ($this->gatePackages as $package)
                         <label class="cursor-pointer">
                             <input type="checkbox" wire:model="packages" value="{{ $package->slug }}" class="peer sr-only">
-                            <span class="inline-flex items-center gap-2 rounded-full border border-ink-900/10 px-4 py-2.5 text-sm font-bold text-ink-700 transition peer-checked:border-brand-700 peer-checked:bg-brand-700 peer-checked:text-white peer-focus-visible:ring-4 peer-focus-visible:ring-brand-500/30 hover:border-brand-500">
+                            <span class="inline-flex items-center gap-2 rounded-full border border-ink-900/10 px-4 py-2.5 text-sm font-medium text-ink-700 transition peer-checked:border-brand-700 peer-checked:bg-brand-700 peer-checked:text-white peer-focus-visible:ring-4 peer-focus-visible:ring-brand-500/30 hover:border-brand-500">
                                 <span class="font-latin text-xs opacity-60">{{ str_pad($loop->iteration, 2, '0', STR_PAD_LEFT) }}</span>
                                 {{ $package->tr('title') }}
                             </span>

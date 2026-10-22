@@ -54,6 +54,10 @@ class LeadInfolist
                         TextEntry::make('type')
                             ->label(__('admin.fields.type'))
                             ->badge(),
+                        TextEntry::make('purpose')
+                            ->label(__('admin.fields.purpose'))
+                            ->formatStateUsing(fn (string $state): string => __("forms.purposes.{$state}"))
+                            ->placeholder('—'),
                         TextEntry::make('service')
                             ->label(__('admin.fields.service'))
                             ->state(fn (Lead $record): ?string => $record->service?->tr('title'))

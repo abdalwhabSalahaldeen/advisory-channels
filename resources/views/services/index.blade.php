@@ -9,14 +9,14 @@
     <section class="py-24 sm:py-32">
         <div class="container-site space-y-5">
             @foreach ($services as $service)
-                <a href="{{ route('services.show', $service) }}" class="card-lift group grid gap-8 rounded-3xl border border-ink-900/5 bg-white p-8 sm:p-12 lg:grid-cols-12 lg:items-center" data-reveal>
+                <a href="{{ route('services.show', $service) }}" class="card-lift group grid gap-8 rounded-sm border border-ink-900/5 bg-white p-8 sm:p-12 lg:grid-cols-12 lg:items-center" data-reveal>
                     <div class="flex items-center gap-6 lg:col-span-5">
-                        <span class="font-latin text-5xl font-extrabold text-brand-700/20 transition group-hover:text-brand-700">{{ str_pad($loop->iteration, 2, '0', STR_PAD_LEFT) }}</span>
+                        <span class="font-display text-5xl font-light text-brand-700/20 transition group-hover:text-brand-700">{{ str_pad($loop->iteration, 2, '0', STR_PAD_LEFT) }}</span>
                         <div>
-                            <span class="inline-flex size-12 items-center justify-center rounded-xl bg-brand-50 text-brand-700">
+                            <span class="inline-flex size-12 items-center justify-center rounded-sm bg-brand-50 text-brand-700">
                                 <x-ui.icon :name="$service->icon ?? 'compass'" />
                             </span>
-                            <h2 class="mt-4 text-2xl font-extrabold sm:text-3xl">{{ $service->tr('title') }}</h2>
+                            <h2 class="mt-4 heading-display text-3xl sm:text-4xl">{{ $service->tr('title') }}</h2>
                         </div>
                     </div>
                     <div class="lg:col-span-6">

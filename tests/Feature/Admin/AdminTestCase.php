@@ -2,18 +2,22 @@
 
 namespace Tests\Feature\Admin;
 
+use App\Enums\InsightType;
 use App\Enums\JobType;
 use App\Enums\LeadType;
+use App\Models\CaseStudy;
 use App\Models\Doc;
 use App\Models\Faq;
 use App\Models\FaqCategory;
 use App\Models\GatePackage;
+use App\Models\Insight;
 use App\Models\JobApplication;
 use App\Models\JobOpening;
 use App\Models\Lead;
 use App\Models\Partner;
 use App\Models\Service;
 use App\Models\Subscriber;
+use App\Models\TeamMember;
 use App\Models\Testimonial;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -136,6 +140,40 @@ abstract class AdminTestCase extends TestCase
             'email' => 'reader@example.com',
             'locale' => 'ar',
             'consented_at' => now(),
+            ...$attributes,
+        ]);
+    }
+
+    protected function createTeamMember(array $attributes = []): TeamMember
+    {
+        return TeamMember::query()->create([
+            'name' => ['ar' => 'سارة العتيبي', 'en' => 'Sara Alotaibi'],
+            'position' => ['ar' => 'الشريك الإداري', 'en' => 'Managing Partner'],
+            'is_leadership' => true,
+            ...$attributes,
+        ]);
+    }
+
+    protected function createInsight(array $attributes = []): Insight
+    {
+        return Insight::query()->create([
+            'slug' => 'vision-2030-market-entry',
+            'type' => InsightType::Report,
+            'title' => ['ar' => 'دليل دخول السوق السعودي', 'en' => 'Saudi market entry guide'],
+            'excerpt' => ['ar' => 'ملخص', 'en' => 'Summary'],
+            'published_at' => now()->subDay(),
+            ...$attributes,
+        ]);
+    }
+
+    protected function createCaseStudy(array $attributes = []): CaseStudy
+    {
+        return CaseStudy::query()->create([
+            'slug' => 'semi-government-transformation',
+            'title' => ['ar' => 'تحول مؤسسي لجهة شبه حكومية', 'en' => 'Transforming a semi-government entity'],
+            'client' => ['ar' => 'جهة شبه حكومية', 'en' => 'Semi-government entity'],
+            'sector' => ['ar' => 'القطاع العام', 'en' => 'Public sector'],
+            'metrics' => [['value' => '35%', 'label' => ['ar' => 'خفض زمن الإجراءات', 'en' => 'Faster processes']]],
             ...$attributes,
         ]);
     }

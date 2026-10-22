@@ -72,6 +72,8 @@ return [
         'linkedin_url' => 'رابط LinkedIn',
         'cv' => 'السيرة الذاتية',
         'cover_letter' => 'رسالة التقديم',
+        'purpose' => 'الغرض',
+        'attachment' => 'المرفق',
         'consent' => 'سياسة الخصوصية',
         'name' => 'الاسم',
         'password' => 'كلمة المرور',

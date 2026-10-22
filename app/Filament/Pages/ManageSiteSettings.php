@@ -3,12 +3,14 @@
 namespace App\Filament\Pages;
 
 use App\Filament\NavigationGroup;
+use App\Filament\Support\Icons;
 use App\Filament\Support\Translations;
 use App\Support\SiteSettings;
 use BackedEnum;
 use Filament\Actions\Action;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Repeater;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
@@ -195,6 +197,7 @@ class ManageSiteSettings extends Page
                     ->label(__('admin.settings.fields.home_intro'))
                     ->rows(4),
             ]),
+            static::cinematicImage('hero_image'),
             Repeater::make('home_stats')
                 ->label(__('admin.settings.fields.home_stats'))
                 ->schema([
@@ -202,6 +205,9 @@ class ManageSiteSettings extends Page
                         ->label(__('admin.settings.fields.stat_value'))
                         ->required()
                         ->maxLength(20),
+                    Select::make('icon')
+                        ->label(__('admin.settings.fields.stat_icon'))
+                        ->options(Icons::options(['compass', 'chart', 'building', 'star', 'briefcase', 'rocket', 'network', 'shield'])),
                     ...collect(config('site.locales'))
                         ->map(fn (array $locale, string $key) => TextInput::make("label.{$key}")
                             ->label(__('admin.settings.fields.stat_label').' — '.$locale['name'])
@@ -210,7 +216,7 @@ class ManageSiteSettings extends Page
                         ->values()
                         ->all(),
                 ])
-                ->columns(3)
+                ->columns(['md' => 2, 'xl' => 4])
                 ->defaultItems(0)
                 ->addActionLabel(__('admin.add_item'))
                 ->reorderable()
@@ -238,6 +244,21 @@ class ManageSiteSettings extends Page
                     ->label(__('admin.settings.fields.vision'))
                     ->rows(3),
             ]),
+            static::cinematicImage('about_image'),
         ];
+    }
+
+    /**
+     * An optional full-bleed background photo, stored on the public disk under branding/.
+     */
+    protected static function cinematicImage(string $key): FileUpload
+    {
+        return FileUpload::make($key)
+            ->label(__("admin.settings.fields.{$key}"))
+            ->helperText(__("admin.settings.fields.{$key}_help"))
+            ->image()
+            ->imageEditor()
+            ->disk('public')
+            ->directory('branding');
     }
 }

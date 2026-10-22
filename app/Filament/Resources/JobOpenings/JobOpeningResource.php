@@ -25,7 +25,7 @@ class JobOpeningResource extends Resource
 
     protected static string|UnitEnum|null $navigationGroup = NavigationGroup::Content;
 
-    protected static ?int $navigationSort = 3;
+    protected static ?int $navigationSort = 6;
 
     public static function getModelLabel(): string
     {

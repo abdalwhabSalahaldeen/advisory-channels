@@ -44,6 +44,7 @@ class NewLeadReceived extends Notification implements ShouldQueue
             ->line(__('notifications.fields.email').': '.$lead->email);
 
         foreach ([
+            'purpose' => $lead->purpose ? __("forms.purposes.{$lead->purpose}") : null,
             'phone' => $lead->phone,
             'company' => $lead->company,
             'job_title' => $lead->job_title,
@@ -52,6 +53,7 @@ class NewLeadReceived extends Notification implements ShouldQueue
             'packages' => $lead->selectedPackages()->map->tr('title')->implode('، '),
             'timeline' => $lead->timeline ? __("forms.timelines.{$lead->timeline}") : null,
             'message' => $lead->message,
+            'attachment' => $lead->attachment_path ? basename($lead->attachment_path) : null,
         ] as $field => $value) {
             if (filled($value)) {
                 $message->line(__("notifications.fields.{$field}").': '.$value);

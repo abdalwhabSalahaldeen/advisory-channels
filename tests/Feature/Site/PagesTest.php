@@ -2,7 +2,10 @@
 
 namespace Tests\Feature\Site;
 
+use App\Models\CaseStudy;
+use App\Models\Insight;
 use App\Models\Service;
+use App\Models\TeamMember;
 use Database\Seeders\DatabaseSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -28,7 +31,8 @@ class PagesTest extends TestCase
     {
         return collect([
             '', '/about', '/services', '/services/strategy-growth', '/saudi-gate', '/careers',
-            '/careers/path-to-consultancy', '/careers/apply', '/faqs', '/request-service',
+            '/careers/path-to-consultancy', '/careers/apply', '/faqs', '/request-service', '/insights',
+            '/insights?type=guide', '/insights/entering-the-saudi-market-in-seven-stages',
             '/request-service?service=grow', '/contact', '/privacy-policy', '/terms-and-conditions',
         ])->mapWithKeys(fn (string $path) => [$path ?: '/' => [$path]])->all();
     }
@@ -45,6 +49,63 @@ class PagesTest extends TestCase
         $this->get("/en{$path}")
             ->assertOk()
             ->assertSee('<html lang="en" dir="ltr"', false);
+    }
+
+    #[Test]
+    public function drafts_and_scheduled_insights_stay_hidden(): void
+    {
+        $insight = Insight::query()->where('slug', 'why-one-size-fits-all-consulting-fails')->sole();
+
+        $insight->update(['published_at' => now()->addWeek()]);
+        $this->get('/ar/insights/why-one-size-fits-all-consulting-fails')->assertNotFound();
+        $this->get('/ar/insights')->assertDontSee('/ar/insights/why-one-size-fits-all-consulting-fails');
+
+        $insight->update(['published_at' => null]);
+        $this->get('/ar/insights/why-one-size-fits-all-consulting-fails')->assertNotFound();
+    }
+
+    #[Test]
+    public function the_impact_pages_appear_once_a_story_is_published(): void
+    {
+        $this->get('/ar/impact')->assertNotFound();
+        $this->get('/ar')->assertDontSee(url('/ar/impact').'"', false);
+
+        CaseStudy::query()->create([
+            'slug' => 'ministry-transformation-office',
+            'title' => ['ar' => 'مكتب تحول لجهة حكومية', 'en' => 'A transformation office for a ministry'],
+            'client' => ['ar' => 'جهة حكومية', 'en' => 'A government entity'],
+            'summary' => ['ar' => 'ملخص', 'en' => 'Summary'],
+            'challenge' => ['ar' => 'التحدي', 'en' => 'The challenge'],
+            'metrics' => [['value' => '40%', 'label' => ['ar' => 'أسرع', 'en' => 'Faster']]],
+            'is_active' => true,
+        ]);
+
+        $this->get('/en/impact')->assertOk()->assertSee('A transformation office for a ministry');
+        $this->get('/en/impact/ministry-transformation-office')->assertOk()->assertSee('40%');
+        $this->get('/en')->assertSee(url('/en/impact'));
+    }
+
+    #[Test]
+    public function leaders_appear_on_the_about_page(): void
+    {
+        $this->get('/en/about')->assertDontSee('Our leadership');
+
+        TeamMember::query()->create([
+            'name' => ['ar' => 'سارة', 'en' => 'Sarah'],
+            'position' => ['ar' => 'الشريك المدير', 'en' => 'Managing Partner'],
+            'is_leadership' => true,
+        ]);
+
+        $this->get('/en/about')->assertSee('Our leadership')->assertSee('Managing Partner');
+    }
+
+    #[Test]
+    public function the_home_page_offers_the_audience_and_need_picker(): void
+    {
+        $this->get('/en')
+            ->assertSee('How can we help you?')
+            ->assertSee('id="picker-audience"', false)
+            ->assertSee('request-service?service=strategy-growth', false);
     }
 
     #[Test]
@@ -108,6 +169,7 @@ class PagesTest extends TestCase
             ->assertOk()
             ->assertHeader('Content-Type', 'application/xml')
             ->assertSee(url('/ar/services/strategy-growth'))
-            ->assertSee(url('/en/careers/path-to-consultancy'));
+            ->assertSee(url('/en/careers/path-to-consultancy'))
+            ->assertSee(url('/ar/insights/entering-the-saudi-market-in-seven-stages'));
     }
 }

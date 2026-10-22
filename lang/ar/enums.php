@@ -31,4 +31,11 @@ return [
         'internship' => 'تدريب',
     ],
 
+    'insight_type' => [
+        'article' => 'مقال',
+        'report' => 'تقرير',
+        'guide' => 'دليل',
+        'news' => 'خبر',
+    ],
+
 ];

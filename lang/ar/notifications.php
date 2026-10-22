@@ -25,6 +25,8 @@ return [
         'packages' => 'المراحل',
         'timeline' => 'موعد البدء',
         'message' => 'الرسالة',
+        'purpose' => 'الغرض',
+        'attachment' => 'مرفق',
     ],
 
 ];

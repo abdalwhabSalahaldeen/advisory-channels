@@ -140,6 +140,7 @@ class FormsTest extends TestCase
         app()->setLocale('en');
 
         Livewire::test(ContactForm::class)
+            ->set('purpose', 'other')
             ->set('full_name', 'Nora')
             ->set('email', 'nora@example.com')
             ->set('message', 'Hello')
@@ -182,9 +183,41 @@ class FormsTest extends TestCase
             ->set('message', 'Hello')
             ->set('consent', true)
             ->call('submit')
+            ->assertHasErrors(['purpose' => 'required'])
+            ->set('purpose', 'partnership')
+            ->call('submit')
             ->assertHasNoErrors();
 
-        $this->assertSame(LeadType::Contact, Lead::query()->sole()->type);
+        $lead = Lead::query()->sole();
+        $this->assertSame(LeadType::Contact, $lead->type);
+        $this->assertSame('partnership', $lead->purpose);
+    }
+
+    #[Test]
+    public function a_tender_invitation_keeps_its_rfp_document_privately(): void
+    {
+        Storage::fake(Lead::ATTACHMENT_DISK);
+
+        Livewire::test(ContactForm::class)
+            ->set('purpose', 'rfp')
+            ->set('full_name', 'Procurement Office')
+            ->set('email', 'tenders@example.gov.sa')
+            ->set('message', 'Please find the RFP attached.')
+            ->set('attachment', UploadedFile::fake()->create('rfp.pdf', 800, 'application/pdf'))
+            ->set('consent', true)
+            ->call('submit')
+            ->assertHasErrors(['company' => 'required'])
+            ->set('company', 'Example Authority')
+            ->set('attachment', UploadedFile::fake()->create('rfp.pdf', 800, 'application/pdf'))
+            ->call('submit')
+            ->assertHasNoErrors();
+
+        $lead = Lead::query()->sole();
+        $this->assertSame(LeadType::ServiceRequest, $lead->type);
+        Storage::disk(Lead::ATTACHMENT_DISK)->assertExists($lead->attachment_path);
+
+        $lead->delete();
+        Storage::disk(Lead::ATTACHMENT_DISK)->assertMissing($lead->attachment_path);
     }
 
     #[Test]

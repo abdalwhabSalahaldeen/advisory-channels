@@ -1,7 +1,7 @@
 <div>
     @if ($submitted)
         <x-ui.form-success :message="__('forms.success_lead')">
-            <button type="button" wire:click="startOver" class="mt-8 text-sm font-bold text-brand-700 underline underline-offset-4">{{ __('forms.send_another') }}</button>
+            <button type="button" wire:click="startOver" class="mt-8 text-sm font-medium text-brand-700 underline underline-offset-4">{{ __('forms.send_another') }}</button>
         </x-ui.form-success>
     @else
         {{-- Progress --}}
@@ -11,7 +11,7 @@
                 @foreach (__('forms.steps') as $label)
                     <li>
                         <span @class(['block h-1.5 rounded-full transition-colors duration-500', 'bg-brand-700' => $loop->iteration <= $step, 'bg-ink-900/10' => $loop->iteration > $step])></span>
-                        <span @class(['mt-2 block text-xs font-bold', 'text-brand-700' => $loop->iteration === $step, 'text-ink-700/60' => $loop->iteration !== $step])>{{ $label }}</span>
+                        <span @class(['mt-2 block text-xs font-medium', 'text-brand-700' => $loop->iteration === $step, 'text-ink-700/60' => $loop->iteration !== $step])>{{ $label }}</span>
                     </li>
                 @endforeach
             </ol>
@@ -20,17 +20,17 @@
         <form wire:submit="{{ $step < self::TOTAL_STEPS ? 'next' : 'submit' }}" novalidate>
             @if ($step === 1)
                 <fieldset>
-                    <legend class="text-xl font-extrabold">{{ __('forms.choose_service') }}</legend>
+                    <legend class="text-xl font-medium">{{ __('forms.choose_service') }}</legend>
                     <div class="mt-6 grid gap-3 sm:grid-cols-2">
                         @foreach ($this->services as $option)
                             <label class="cursor-pointer">
                                 <input type="radio" wire:model="service" value="{{ $option->slug }}" class="peer sr-only">
-                                <span class="flex h-full items-start gap-4 rounded-2xl border border-ink-900/10 p-5 transition peer-checked:border-brand-700 peer-checked:bg-brand-50 peer-checked:ring-2 peer-checked:ring-brand-700 peer-focus-visible:ring-4 peer-focus-visible:ring-brand-500/30 hover:border-brand-500">
-                                    <span class="inline-flex size-10 shrink-0 items-center justify-center rounded-xl bg-brand-700 text-white">
+                                <span class="flex h-full items-start gap-4 rounded-sm border border-ink-900/10 p-5 transition peer-checked:border-brand-700 peer-checked:bg-brand-50 peer-checked:ring-2 peer-checked:ring-brand-700 peer-focus-visible:ring-4 peer-focus-visible:ring-brand-500/30 hover:border-brand-500">
+                                    <span class="inline-flex size-10 shrink-0 items-center justify-center rounded-sm bg-brand-700 text-white">
                                         <x-ui.icon :name="$option->icon ?? 'compass'" class="size-5" />
                                     </span>
                                     <span>
-                                        <span class="block font-bold">{{ $option->tr('title') }}</span>
+                                        <span class="block font-medium">{{ $option->tr('title') }}</span>
                                         <span class="mt-1 block text-sm leading-relaxed text-ink-700">{{ $option->tr('excerpt') }}</span>
                                     </span>
                                 </span>
@@ -38,10 +38,10 @@
                         @endforeach
                         <label class="cursor-pointer sm:col-span-2">
                             <input type="radio" wire:model="service" value="{{ self::NOT_SURE }}" class="peer sr-only">
-                            <span class="flex items-center gap-4 rounded-2xl border border-dashed border-ink-900/20 p-5 transition peer-checked:border-solid peer-checked:border-brand-700 peer-checked:bg-brand-50 peer-checked:ring-2 peer-checked:ring-brand-700 hover:border-brand-500">
-                                <span class="inline-flex size-10 shrink-0 items-center justify-center rounded-xl bg-paper text-brand-700 font-extrabold">?</span>
+                            <span class="flex items-center gap-4 rounded-sm border border-dashed border-ink-900/20 p-5 transition peer-checked:border-solid peer-checked:border-brand-700 peer-checked:bg-brand-50 peer-checked:ring-2 peer-checked:ring-brand-700 hover:border-brand-500">
+                                <span class="inline-flex size-10 shrink-0 items-center justify-center rounded-sm bg-paper text-brand-700 font-medium">?</span>
                                 <span>
-                                    <span class="block font-bold">{{ __('forms.not_sure') }}</span>
+                                    <span class="block font-medium">{{ __('forms.not_sure') }}</span>
                                     <span class="mt-1 block text-sm text-ink-700">{{ __('forms.not_sure_text') }}</span>
                                 </span>
                             </span>
@@ -92,7 +92,7 @@
 
             <div class="mt-10 flex items-center justify-between gap-4 border-t border-ink-900/5 pt-8">
                 @if ($step > 1)
-                    <button type="button" wire:click="back" class="inline-flex items-center gap-2 text-sm font-bold text-ink-700 transition hover:text-brand-700">
+                    <button type="button" wire:click="back" class="inline-flex items-center gap-2 text-sm font-medium text-ink-700 transition hover:text-brand-700">
                         <x-ui.icon name="arrow" class="size-4 -scale-x-100 rtl:scale-x-100" />
                         {{ __('global.actions.back') }}
                     </button>

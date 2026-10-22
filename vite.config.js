@@ -9,14 +9,24 @@ export default defineConfig({
             input: ['resources/css/app.css', 'resources/js/app.js'],
             refresh: true,
             fonts: [
-                bunny('Tajawal', {
-                    weights: [300, 400, 500, 700, 800],
+                // Arabic: the typeface of the Saudi Royal Commission sites.
+                bunny('IBM Plex Sans Arabic', {
+                    alias: 'plex-arabic',
+                    weights: [300, 400, 500, 600, 700],
                     subsets: ['arabic', 'latin'],
-                    preload: [{ weight: 400 }, { weight: 700 }],
+                    preload: [{ weight: 300 }, { weight: 400 }],
                 }),
-                bunny('Manrope', {
-                    weights: [300, 400, 500, 600, 700, 800],
-                    preload: [{ weight: 400 }, { weight: 700 }],
+                bunny('IBM Plex Sans', {
+                    alias: 'plex',
+                    weights: [300, 400, 500, 600, 700],
+                    preload: [{ weight: 400 }],
+                }),
+                // English headlines get an editorial serif, as on the big consulting firms' sites.
+                bunny('Fraunces', {
+                    alias: 'fraunces',
+                    weights: [300, 400, 500],
+                    styles: ['normal', 'italic'],
+                    preload: [{ weight: 300, style: 'normal' }],
                 }),
             ],
         }),

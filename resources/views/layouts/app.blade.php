@@ -10,7 +10,7 @@
         @include('inc.head')
     </head>
     <body class="min-h-dvh overflow-x-clip">
-        <a href="#main" class="sr-only z-[100] rounded-full bg-brand-700 px-5 py-3 font-bold text-white focus:not-sr-only focus:fixed focus:start-4 focus:top-4">
+        <a href="#main" class="sr-only z-[100] rounded-full bg-brand-700 px-5 py-3 font-medium text-white focus:not-sr-only focus:fixed focus:start-4 focus:top-4">
             {{ __('global.skip_to_content') }}
         </a>
 

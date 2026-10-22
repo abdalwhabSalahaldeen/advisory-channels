@@ -8,9 +8,11 @@
 @custom-variant ltr (&:where([dir="ltr"], [dir="ltr"] *));
 
 @theme {
-    --font-sans: var(--font-manrope), var(--font-tajawal), ui-sans-serif, system-ui, sans-serif;
-    --font-arabic: var(--font-tajawal), ui-sans-serif, system-ui, sans-serif;
-    --font-latin: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+    --font-sans: var(--font-plex), var(--font-plex-arabic), ui-sans-serif, system-ui, sans-serif;
+    --font-arabic: var(--font-plex-arabic), var(--font-plex), ui-sans-serif, system-ui, sans-serif;
+    --font-latin: var(--font-plex), ui-sans-serif, system-ui, sans-serif;
+    /* Editorial serif for English headlines; Arabic pages swap it for Plex Arabic (see below). */
+    --font-display: var(--font-fraunces), Georgia, 'Times New Roman', serif;
 
     /* Brand green, built around the logo's #017337 (brand-700). */
     --color-brand-50: #ecfdf3;
@@ -25,21 +27,38 @@
     --color-brand-900: #064a29;
     --color-brand-950: #022a16;
 
-    /* Green-tinted blacks for the dark sections. */
+    /* Deep royal greens for the large dark sections (Royal Commission sites). */
+    --color-forest-700: #164d36;
+    --color-forest-800: #104631;
+    --color-forest-900: #0c2e20;
+    --color-forest-950: #071a12;
+
+    /* Green-tinted blacks. */
     --color-ink-600: #26332d;
     --color-ink-700: #1a2420;
     --color-ink-800: #111816;
     --color-ink-900: #0a0f0d;
     --color-ink-950: #050807;
 
-    /* Warm sand accent, used sparingly for premium touches. */
-    --color-sand-100: #f6f0e4;
-    --color-sand-300: #e6d4ad;
+    /* Desert sand and gold: warm backgrounds and fine luxury details. */
+    --color-sand-50: #fbf8f3;
+    --color-sand-100: #f4eadd;
+    --color-sand-200: #ebdcc5;
+    --color-sand-300: #e0c9a6;
     --color-sand-500: #c9a45c;
+    --color-gold-300: #e2c88f;
+    --color-gold-400: #d4b36f;
+    --color-gold-500: #b8955a;
+    --color-gold-600: #997843;
 
-    --color-paper: #f6f7f4;
+    --color-paper: #f8f5ef;
 
     --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-luxe: cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+[dir='rtl'] {
+    --font-display: var(--font-plex-arabic), var(--font-plex), ui-sans-serif, system-ui, sans-serif;
 }
 
 @layer base {
@@ -58,11 +77,11 @@
     }
 
     ::selection {
-        @apply bg-brand-600 text-white;
+        @apply bg-brand-700 text-white;
     }
 
     :focus-visible {
-        @apply outline-2 outline-offset-2 outline-brand-500;
+        @apply outline-2 outline-offset-2 outline-gold-500;
     }
 
     [x-cloak] {
@@ -72,23 +91,33 @@
 
 @layer components {
     .container-site {
-        @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
+        @apply mx-auto w-full max-w-[84rem] px-4 sm:px-6 lg:px-10;
     }
 
+    /* Small label above headings, with a gold hairline. */
     .eyebrow {
-        @apply inline-flex items-center gap-2 text-xs font-bold tracking-[0.2em] uppercase text-brand-600;
+        @apply inline-flex items-center gap-3 text-[0.7rem] font-semibold tracking-[0.28em] uppercase text-gold-600;
     }
 
     [dir='rtl'] .eyebrow {
-        @apply tracking-normal text-sm;
+        @apply text-sm tracking-normal;
     }
 
     .eyebrow::before {
         content: '';
-        @apply inline-block h-px w-8 bg-current;
+        @apply inline-block h-px w-10 bg-current;
     }
 
-    /* The bracket motif from the logo: an L-shaped corner at top-start and bottom-end. */
+    /* Display headings: light weight at large sizes reads as calm and premium. */
+    .heading-display {
+        @apply font-display font-light tracking-tight text-balance;
+    }
+
+    [dir='rtl'] .heading-display {
+        @apply tracking-normal;
+    }
+
+    /* The bracket motif from the logo, drawn in gold. */
     .bracket-frame {
         @apply relative;
     }
@@ -96,55 +125,70 @@
     .bracket-frame::before,
     .bracket-frame::after {
         content: '';
-        @apply pointer-events-none absolute size-6 border-brand-500;
+        @apply pointer-events-none absolute size-7 border-gold-500/70;
     }
 
     .bracket-frame::before {
-        @apply -start-3 -top-3 border-s-2 border-t-2;
+        @apply -start-4 -top-4 border-s border-t;
     }
 
     .bracket-frame::after {
-        @apply -end-3 -bottom-3 border-e-2 border-b-2;
+        @apply -end-4 -bottom-4 border-e border-b;
+    }
+
+    /* Najdi-inspired eight-point star lattice; colour comes from currentColor. */
+    .pattern-star {
+        background-color: currentColor;
+        mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='72' height='72' viewBox='0 0 72 72'%3E%3Cg fill='none' stroke='%23000' stroke-width='0.9'%3E%3Crect x='22' y='22' width='28' height='28'/%3E%3Crect x='22' y='22' width='28' height='28' transform='rotate(45 36 36)'/%3E%3Ccircle cx='36' cy='36' r='5'/%3E%3Cpath d='M0 36h6M66 36h6M36 0v6M36 66v6M0 0l8 8M72 0l-8 8M0 72l8-8M72 72l-8-8'/%3E%3C/g%3E%3C/svg%3E");
+        mask-size: 72px 72px;
+    }
+
+    .hairline {
+        @apply h-px w-full bg-gradient-to-r from-transparent via-gold-500/50 to-transparent;
     }
 
     .prose-site {
-        @apply max-w-none text-lg leading-relaxed text-ink-700;
+        @apply max-w-none text-lg leading-[1.9] text-ink-700;
     }
 
     .prose-site > * + * {
-        @apply mt-5;
+        @apply mt-6;
     }
 
     .prose-site h2 {
-        @apply mt-10 text-2xl font-bold text-ink-900;
+        @apply mt-14 font-display text-3xl font-light text-ink-900;
     }
 
     .prose-site h3 {
-        @apply mt-8 text-xl font-bold text-ink-900;
+        @apply mt-10 text-xl font-semibold text-ink-900;
     }
 
     .prose-site ul {
-        @apply list-disc space-y-2 ps-6 marker:text-brand-600;
+        @apply list-disc space-y-2 ps-6 marker:text-gold-500;
     }
 
     .prose-site ol {
-        @apply list-decimal space-y-2 ps-6 marker:text-brand-600;
+        @apply list-decimal space-y-2 ps-6 marker:text-gold-600;
     }
 
     .prose-site a {
-        @apply font-semibold text-brand-700 underline decoration-brand-300 underline-offset-4 hover:decoration-brand-700;
+        @apply font-medium text-brand-700 underline decoration-gold-400 underline-offset-4 hover:decoration-brand-700;
     }
 
     .prose-site strong {
-        @apply font-bold text-ink-900;
+        @apply font-semibold text-ink-900;
+    }
+
+    .prose-site blockquote {
+        @apply border-s-2 border-gold-500 ps-6 font-display text-2xl font-light text-ink-900;
     }
 
     .form-label {
-        @apply mb-2 block text-sm font-semibold text-ink-800;
+        @apply mb-2 block text-sm font-medium text-ink-800;
     }
 
     .form-input {
-        @apply block w-full rounded-xl border border-ink-900/10 bg-white px-4 py-3 text-base text-ink-900 shadow-xs transition placeholder:text-ink-900/35 focus:border-brand-500 focus:ring-4 focus:ring-brand-500/15 focus:outline-none;
+        @apply block w-full rounded-md border border-ink-900/12 bg-white px-4 py-3.5 text-base text-ink-900 transition placeholder:text-ink-900/35 focus:border-brand-700 focus:ring-4 focus:ring-brand-700/10 focus:outline-none;
     }
 
     .form-input[aria-invalid='true'] {
@@ -156,32 +200,53 @@
     }
 
     .card-lift {
-        @apply transition duration-500 ease-out-expo hover:-translate-y-1 hover:shadow-2xl hover:shadow-brand-950/10;
+        @apply transition duration-700 ease-out-expo hover:-translate-y-1 hover:shadow-[0_30px_60px_-30px_rgb(12_46_32/0.35)];
     }
 
     .grid-lines {
         background-image:
-            linear-gradient(to right, rgb(255 255 255 / 0.05) 1px, transparent 1px),
-            linear-gradient(to bottom, rgb(255 255 255 / 0.05) 1px, transparent 1px);
-        background-size: 64px 64px;
+            linear-gradient(to right, rgb(255 255 255 / 0.04) 1px, transparent 1px),
+            linear-gradient(to bottom, rgb(255 255 255 / 0.04) 1px, transparent 1px);
+        background-size: 72px 72px;
     }
 
-    .grid-lines-dark {
-        background-image:
-            linear-gradient(to right, rgb(10 15 13 / 0.05) 1px, transparent 1px),
-            linear-gradient(to bottom, rgb(10 15 13 / 0.05) 1px, transparent 1px);
-        background-size: 64px 64px;
+    /* Thin progress bar for long reads. */
+    .reading-progress {
+        @apply fixed inset-x-0 top-0 z-[60] h-0.5 origin-left bg-gold-500 rtl:origin-right;
+        transform: scaleX(var(--progress, 0));
     }
 }
 
 /* Arabic script with diacritics needs more room between lines than the Latin-tuned leading utilities. */
 [dir='rtl'] :is(h1, h2, h3, blockquote) {
-    line-height: 1.4;
+    line-height: 1.45;
+}
+
+/* Slow drift for hero photography. */
+@keyframes ken-burns {
+    from {
+        transform: scale(1.08);
+    }
+
+    to {
+        transform: scale(1);
+    }
+}
+
+.ken-burns {
+    animation: ken-burns 14s var(--ease-luxe) both;
 }
 
 /* Hidden only while JS is running (html.js) and motion is allowed; app.js reveals it on scroll. */
 @media (prefers-reduced-motion: no-preference) {
-    .js [data-reveal] {
+    .js [data-reveal],
+    .js [data-split] {
         opacity: 0;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .ken-burns {
+        animation: none;
     }
 }

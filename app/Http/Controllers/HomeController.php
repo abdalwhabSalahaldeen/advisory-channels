@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CaseStudy;
 use App\Models\Doc;
 use App\Models\Faq;
 use App\Models\GatePackage;
+use App\Models\Insight;
 use App\Models\JobOpening;
 use App\Models\Partner;
 use App\Models\Service;
+use App\Models\TeamMember;
 use App\Models\Testimonial;
 use Illuminate\Contracts\View\View;
 
@@ -25,12 +28,16 @@ class HomeController extends Controller
             'testimonials' => Testimonial::query()->published()->get(),
             'partners' => Partner::query()->published()->get(),
             'faqs' => Faq::query()->published()->limit(4)->get(),
+            'insights' => Insight::query()->published()->reorder()->orderByDesc('is_featured')->latest('published_at')->limit(3)->get(),
+            'caseStudies' => CaseStudy::query()->published()->limit(3)->get(),
         ]);
     }
 
     public function about(): View
     {
-        return view('pages.about');
+        return view('pages.about', [
+            'leaders' => TeamMember::query()->published()->where('is_leadership', true)->get(),
+        ]);
     }
 
     public function saudiGate(): View

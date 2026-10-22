@@ -7,7 +7,7 @@
 
     <section class="py-24 sm:py-32">
         <div class="container-site max-w-3xl!">
-            <div class="rounded-3xl border border-ink-900/5 bg-white p-6 sm:p-10" data-reveal>
+            <div class="rounded-sm border border-ink-900/5 bg-white p-6 sm:p-10" data-reveal>
                 <livewire:job-application-form />
             </div>
         </div>

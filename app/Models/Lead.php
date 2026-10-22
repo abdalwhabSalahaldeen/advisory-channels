@@ -9,18 +9,33 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Storage;
 
 /**
  * Any enquiry submitted from the public site: a service request, a Saudi Gate
  * enquiry, or a general contact message.
  */
 #[Fillable([
-    'type', 'status', 'full_name', 'company', 'job_title', 'email', 'phone', 'country',
-    'service_id', 'packages', 'timeline', 'message', 'notes', 'locale', 'source_url', 'consented_at',
+    'type', 'purpose', 'status', 'full_name', 'company', 'job_title', 'email', 'phone', 'country',
+    'service_id', 'packages', 'timeline', 'message', 'attachment_path', 'notes', 'locale', 'source_url', 'consented_at',
 ])]
 class Lead extends Model
 {
     use HasFactory;
+
+    /**
+     * RFP documents and other attachments are private, like CVs.
+     */
+    public const ATTACHMENT_DISK = 'local';
+
+    protected static function booted(): void
+    {
+        static::deleted(function (Lead $lead) {
+            if ($lead->attachment_path) {
+                Storage::disk(self::ATTACHMENT_DISK)->delete($lead->attachment_path);
+            }
+        });
+    }
 
     /**
      * Get the attributes that should be cast.

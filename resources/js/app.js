@@ -1,11 +1,12 @@
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { SplitText } from 'gsap/SplitText';
 import Lenis from 'lenis';
 import Swiper from 'swiper';
 import { A11y, Keyboard } from 'swiper/modules';
 import { networkCanvas } from './network-canvas';
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, SplitText);
 
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -31,16 +32,81 @@ function reveals() {
 
         gsap.fromTo(
             element,
-            { autoAlpha: 0, y: 32 },
+            { autoAlpha: 0, y: 28 },
             {
                 autoAlpha: 1,
                 y: 0,
-                duration: 1.1,
+                duration: 1.4,
                 delay,
                 ease: 'expo.out',
                 scrollTrigger: { trigger: element, start: 'top 88%', once: true },
             },
         );
+    });
+}
+
+// Headlines rise line by line from behind a mask, as on editorial and Royal Commission sites.
+function splitHeadings() {
+    if (reducedMotion) {
+        return;
+    }
+
+    gsap.utils.toArray('[data-split]').forEach((element) => {
+        // Splitting by characters would break Arabic letter joining, so lines only.
+        SplitText.create(element, {
+            type: 'lines',
+            mask: 'lines',
+            autoSplit: true,
+            onSplit: (split) => {
+                gsap.set(element, { autoAlpha: 1 });
+
+                return gsap.from(split.lines, {
+                    yPercent: 110,
+                    duration: 1.4,
+                    stagger: 0.12,
+                    delay: Number(element.dataset.revealDelay ?? 0),
+                    ease: 'expo.out',
+                    scrollTrigger: { trigger: element, start: 'top 90%', once: true },
+                });
+            },
+        });
+    });
+}
+
+// Images open from a thin vertical slit.
+function imageReveals() {
+    if (reducedMotion) {
+        return;
+    }
+
+    gsap.utils.toArray('[data-reveal-image]').forEach((element) => {
+        gsap.fromTo(
+            element,
+            { clipPath: 'inset(0 50% 0 50%)' },
+            {
+                clipPath: 'inset(0 0% 0 0%)',
+                duration: 1.6,
+                ease: 'expo.inOut',
+                scrollTrigger: { trigger: element, start: 'top 85%', once: true },
+            },
+        );
+    });
+}
+
+// The gold bar at the top of long articles.
+function readingProgress() {
+    const bar = document.querySelector('[data-reading-progress]');
+    const article = document.querySelector('[data-article]');
+
+    if (!bar || !article) {
+        return;
+    }
+
+    ScrollTrigger.create({
+        trigger: article,
+        start: 'top 20%',
+        end: 'bottom 80%',
+        onUpdate: (self) => bar.style.setProperty('--progress', self.progress.toFixed(3)),
     });
 }
 
@@ -128,6 +194,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Reveal targets start hidden (html.js in app.css); never leave them hidden if animating fails.
     safely(reveals, () => document.documentElement.classList.remove('js'));
+    safely(splitHeadings, () => gsap.set('[data-split]', { autoAlpha: 1 }));
+    safely(imageReveals);
+    safely(readingProgress);
     safely(counters);
     safely(journeyProgress);
     safely(sliders);

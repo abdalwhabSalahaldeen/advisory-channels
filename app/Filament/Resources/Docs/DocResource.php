@@ -27,7 +27,7 @@ class DocResource extends Resource
 
     protected static string|UnitEnum|null $navigationGroup = NavigationGroup::Content;
 
-    protected static ?int $navigationSort = 8;
+    protected static ?int $navigationSort = 11;
 
     public static function getModelLabel(): string
     {

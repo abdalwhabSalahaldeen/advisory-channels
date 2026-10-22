@@ -28,7 +28,7 @@ class FaqCategoryResource extends Resource
 
     protected static string|UnitEnum|null $navigationGroup = NavigationGroup::Content;
 
-    protected static ?int $navigationSort = 5;
+    protected static ?int $navigationSort = 8;
 
     public static function getModelLabel(): string
     {
