@@ -32,6 +32,8 @@ class SubscribeForm extends Component
         }
 
         $this->submitted = true;
+
+        $this->dispatch('track', name: 'sign_up', params: ['method' => 'newsletter']);
     }
 
     public function render(): View

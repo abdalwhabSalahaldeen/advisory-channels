@@ -104,6 +104,8 @@ class RequestServiceForm extends Component
         }
 
         $this->submitted = true;
+
+        $this->dispatch('track', name: 'generate_lead', params: ['form' => 'request_service', 'service' => (string) $this->service]);
     }
 
     public function startOver(): void

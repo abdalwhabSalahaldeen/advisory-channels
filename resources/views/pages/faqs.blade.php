@@ -3,6 +3,21 @@
 @section('title', __('faqs.meta_title'))
 @section('description', __('faqs.text'))
 
+@push('head')
+    <script type="application/ld+json">
+        {!! json_encode([
+            '@context' => 'https://schema.org',
+            '@type' => 'FAQPage',
+            'inLanguage' => app()->getLocale(),
+            'mainEntity' => $categories->flatMap->faqs->map(fn ($faq) => [
+                '@type' => 'Question',
+                'name' => $faq->tr('question'),
+                'acceptedAnswer' => ['@type' => 'Answer', 'text' => $faq->tr('answer')],
+            ])->values()->all(),
+        ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}
+    </script>
+@endpush
+
 @section('content')
     <x-ui.page-hero :eyebrow="__('faqs.eyebrow')" :title="__('faqs.title')" :text="__('faqs.text')" />
 

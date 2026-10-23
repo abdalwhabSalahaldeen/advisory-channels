@@ -75,6 +75,7 @@ class JobApplicationForm extends Component
 
         $this->reset('cv');
         $this->submitted = true;
+        $this->dispatch('track', name: 'job_application', params: ['form' => 'job_application']);
     }
 
     /**

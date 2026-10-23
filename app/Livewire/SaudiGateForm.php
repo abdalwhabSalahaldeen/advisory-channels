@@ -87,6 +87,8 @@ class SaudiGateForm extends Component
         }
 
         $this->submitted = true;
+
+        $this->dispatch('track', name: 'generate_lead', params: ['form' => 'saudi_gate']);
     }
 
     public function render(): View

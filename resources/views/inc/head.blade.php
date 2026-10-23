@@ -26,24 +26,20 @@
 <meta property="og:title" content="{{ $pageTitle }}">
 <meta property="og:description" content="{{ $metaDescription }}">
 <meta property="og:url" content="{{ url()->current() }}">
+<meta property="og:image" content="{{ asset(config('site.images.hero')) }}">
 <meta property="og:locale" content="{{ $locale === 'ar' ? 'ar_SA' : 'en_US' }}">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#050807">
 
+@if ($verification = $site->get('google_site_verification'))
+    <meta name="google-site-verification" content="{{ $verification }}">
+@endif
+
 <script type="application/ld+json">
-    {!! json_encode([
-        '@context' => 'https://schema.org',
-        '@type' => 'Organization',
-        'name' => $site->tr('site_name', 'en'),
-        'alternateName' => $site->tr('site_name', 'ar'),
-        'url' => url('/'),
-        'email' => $site->get('contact_email'),
-        'foundingDate' => '2019',
-        'areaServed' => 'SA',
-        'sameAs' => array_values(array_filter([$site->get('linkedin_url'), $site->get('x_url')])),
-    ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}
+    {!! json_encode($site->organizationSchema(), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}
 </script>
 @stack('head')
 
 @vite(['resources/css/app.css', 'resources/js/app.js'])
 @livewireStyles
+@include('inc.analytics')

@@ -30,6 +30,11 @@
                         <x-ui.icon name="mail" class="size-3.5" /> {{ $email }}
                     </a>
                 @endif
+                @if ($phone = $site->get('contact_phone'))
+                    <a href="tel:{{ preg_replace('/\s+/', '', $phone) }}" class="inline-flex items-center gap-2 transition hover:text-gold-300" dir="ltr">
+                        <x-ui.icon name="phone" class="size-3.5" /> {{ $phone }}
+                    </a>
+                @endif
                 @if ($linkedin = $site->get('linkedin_url'))
                     <a href="{{ $linkedin }}" target="_blank" rel="noopener" class="transition hover:text-gold-300" aria-label="LinkedIn"><x-ui.icon name="linkedin" class="size-3.5" /></a>
                 @endif

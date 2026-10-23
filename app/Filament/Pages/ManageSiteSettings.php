@@ -91,6 +91,22 @@ class ManageSiteSettings extends Page
                                         ->rows(3)
                                         ->maxLength(300),
                                 ]),
+                                Section::make(__('admin.settings.fields.google'))
+                                    ->schema([
+                                        TextInput::make('ga_measurement_id')
+                                            ->label(__('admin.settings.fields.ga_measurement_id'))
+                                            ->helperText(__('admin.settings.fields.ga_measurement_id_help'))
+                                            ->regex('/^G-[A-Z0-9]+$/')
+                                            ->placeholder('G-XXXXXXXXXX'),
+                                        TextInput::make('google_site_verification')
+                                            ->label(__('admin.settings.fields.google_site_verification'))
+                                            ->helperText(__('admin.settings.fields.google_site_verification_help'))
+                                            ->maxLength(100),
+                                        TextInput::make('google_business_url')
+                                            ->label(__('admin.settings.fields.google_business_url'))
+                                            ->helperText(__('admin.settings.fields.google_business_url_help'))
+                                            ->url(),
+                                    ]),
                             ]),
                     ]),
             ]);
@@ -162,9 +178,11 @@ class ManageSiteSettings extends Page
                                 ->email(),
                             TextInput::make('contact_phone')
                                 ->label(__('admin.settings.fields.contact_phone'))
+                                ->helperText(__('admin.settings.fields.contact_phone_help'))
                                 ->tel(),
                             TextInput::make('whatsapp')
                                 ->label(__('admin.settings.fields.whatsapp'))
+                                ->helperText(__('admin.settings.fields.whatsapp_help'))
                                 ->tel(),
                             TextInput::make('linkedin_url')
                                 ->label(__('admin.settings.fields.linkedin_url'))
@@ -180,6 +198,40 @@ class ManageSiteSettings extends Page
                                 ->helperText(__('admin.settings.fields.request_service_url_help'))
                                 ->url(),
                         ]),
+                ]),
+            Section::make(__('admin.settings.fields.national_address'))
+                ->description(__('admin.settings.fields.national_address_help'))
+                ->schema([
+                    Grid::make(['md' => 3])
+                        ->schema([
+                            TextInput::make('national_address.building_number')
+                                ->label(__('admin.settings.fields.building_number'))
+                                ->maxLength(10),
+                            TextInput::make('national_address.additional_number')
+                                ->label(__('admin.settings.fields.additional_number'))
+                                ->maxLength(10),
+                            TextInput::make('national_address.postal_code')
+                                ->label(__('admin.settings.fields.postal_code'))
+                                ->maxLength(10),
+                            TextInput::make('national_address.short_address')
+                                ->label(__('admin.settings.fields.short_address'))
+                                ->maxLength(12),
+                        ]),
+                    Translations::tabs(fn (string $locale) => [
+                        Grid::make(['md' => 3])
+                            ->schema([
+                                TextInput::make("national_address.street.{$locale}")
+                                    ->label(__('admin.settings.fields.street')),
+                                TextInput::make("national_address.district.{$locale}")
+                                    ->label(__('admin.settings.fields.district')),
+                                TextInput::make("national_address.city.{$locale}")
+                                    ->label(__('admin.settings.fields.city')),
+                            ]),
+                    ]),
+                    TextInput::make('map_location')
+                        ->label(__('admin.settings.fields.map_location'))
+                        ->helperText(__('admin.settings.fields.map_location_help'))
+                        ->maxLength(255),
                 ]),
         ];
     }

@@ -90,6 +90,7 @@ class ContactForm extends Component
 
         $this->reset('attachment');
         $this->submitted = true;
+        $this->dispatch('track', name: 'generate_lead', params: ['form' => 'contact']);
     }
 
     /**

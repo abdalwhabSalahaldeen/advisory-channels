@@ -58,6 +58,12 @@
                         <a href="tel:{{ preg_replace('/\s+/', '', $phone) }}" class="transition hover:text-white" dir="ltr">{{ $phone }}</a>
                     </li>
                 @endif
+                @if ($whatsappUrl = $site->whatsappUrl(__('contact.whatsapp_message')))
+                    <li class="flex items-center gap-3">
+                        <x-ui.icon name="whatsapp" class="size-5 text-gold-400" />
+                        <a href="{{ $whatsappUrl }}" target="_blank" rel="noopener" data-track="whatsapp_click" class="transition hover:text-white" dir="ltr">{{ $site->get('whatsapp') }}</a>
+                    </li>
+                @endif
                 @if ($address = $site->tr('address'))
                     <li class="flex items-center gap-3">
                         <x-ui.icon name="pin" class="size-5 text-gold-400" />

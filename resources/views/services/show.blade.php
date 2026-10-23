@@ -3,6 +3,40 @@
 @section('title', $service->tr('meta_title') ?: $service->tr('title'))
 @section('description', $service->tr('meta_description') ?: $service->tr('excerpt'))
 
+@push('head')
+    <script type="application/ld+json">
+        {!! json_encode([
+            '@context' => 'https://schema.org',
+            '@graph' => [
+                [
+                    '@type' => 'Service',
+                    'name' => $service->tr('title'),
+                    'description' => $service->tr('excerpt'),
+                    'url' => url()->current(),
+                    'image' => $service->imageUrl(),
+                    'serviceType' => $service->tr('title'),
+                    'areaServed' => ['@type' => 'Country', 'name' => 'Saudi Arabia'],
+                    'inLanguage' => app()->getLocale(),
+                    'provider' => ['@type' => 'ProfessionalService', 'name' => $site->tr('site_name', 'en'), 'url' => url('/')],
+                    'hasOfferCatalog' => ($highlights = $service->trList('highlights')) ? [
+                        '@type' => 'OfferCatalog',
+                        'name' => $service->tr('title'),
+                        'itemListElement' => collect($highlights)->map(fn ($highlight) => ['@type' => 'Offer', 'itemOffered' => ['@type' => 'Service', 'name' => $highlight]])->all(),
+                    ] : null,
+                ],
+                [
+                    '@type' => 'BreadcrumbList',
+                    'itemListElement' => [
+                        ['@type' => 'ListItem', 'position' => 1, 'name' => $site->tr('site_name'), 'item' => route('home')],
+                        ['@type' => 'ListItem', 'position' => 2, 'name' => __('header.services'), 'item' => route('services.index')],
+                        ['@type' => 'ListItem', 'position' => 3, 'name' => $service->tr('title'), 'item' => url()->current()],
+                    ],
+                ],
+            ],
+        ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}
+    </script>
+@endpush
+
 @section('content')
     <x-ui.page-hero :eyebrow="__('services.eyebrow')" :title="$service->tr('title')" :text="$service->tr('excerpt')" :image="$service->imageUrl()" />
 
