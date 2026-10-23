@@ -74,6 +74,34 @@
         </section>
     @endif
 
+    {{-- Licences & accreditations (shown once added in Site settings) --}}
+    @if ($credentials = $site->credentials())
+        <section class="pb-24 sm:pb-32">
+            <div class="container-site">
+                <x-ui.section-heading :eyebrow="__('about.credentials_eyebrow')" :title="__('about.credentials_title')" />
+                <div class="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+                    @foreach ($credentials as $credential)
+                        <a @if ($credential['url']) href="{{ $credential['url'] }}" target="_blank" rel="noopener" @endif class="group flex items-center gap-5 rounded-sm border border-ink-900/10 bg-white p-6 transition hover:border-brand-700/40" data-reveal data-reveal-delay="{{ ($loop->index % 4) * 0.06 }}">
+                            @if ($credential['logo'])
+                                <img src="{{ Storage::disk('public')->url($credential['logo']) }}" alt="" class="size-14 shrink-0 object-contain" loading="lazy">
+                            @else
+                                <span class="inline-flex size-14 shrink-0 items-center justify-center rounded-full bg-brand-700/10 text-brand-700">
+                                    <x-ui.icon name="shield" class="size-6" />
+                                </span>
+                            @endif
+                            <span>
+                                <span class="block font-medium text-ink-900">{{ $credential['name'] }}</span>
+                                @if ($credential['number'])
+                                    <span class="mt-1 block font-latin text-sm text-ink-700" dir="ltr">{{ $credential['number'] }}</span>
+                                @endif
+                            </span>
+                        </a>
+                    @endforeach
+                </div>
+            </div>
+        </section>
+    @endif
+
     {{-- Values --}}
     <section class="bg-white py-24 sm:py-32">
         <div class="container-site">

@@ -68,6 +68,27 @@
         </div>
     </div>
 
+    @if ($credentials = $site->credentials())
+        <div class="relative border-t border-white/10">
+            <div class="container-site flex flex-wrap items-center gap-x-8 gap-y-3 py-5 text-sm text-white/60">
+                <p class="flex items-center gap-2 font-medium text-white">
+                    <x-ui.icon name="shield" class="size-4 text-gold-400" /> {{ __('footer.credentials') }}
+                </p>
+                @foreach ($credentials as $credential)
+                    <a @if ($credential['url']) href="{{ $credential['url'] }}" target="_blank" rel="noopener" @endif class="inline-flex items-center gap-2 transition hover:text-white">
+                        @if ($credential['logo'])
+                            <img src="{{ Storage::disk('public')->url($credential['logo']) }}" alt="" class="h-6 w-auto rounded-sm bg-white p-0.5" loading="lazy">
+                        @endif
+                        <span>{{ $credential['name'] }}</span>
+                        @if ($credential['number'])
+                            <span class="font-latin text-white/40" dir="ltr">{{ $credential['number'] }}</span>
+                        @endif
+                    </a>
+                @endforeach
+            </div>
+        </div>
+    @endif
+
     <div class="relative border-t border-white/10">
         <div class="container-site flex flex-col gap-3 py-6 text-sm text-white/50 sm:flex-row sm:items-center sm:justify-between">
             <p>&copy; {{ now()->year }} {{ $site->tr('site_name') }}. {{ __('footer.rights') }}</p>

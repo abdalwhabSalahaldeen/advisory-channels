@@ -6,6 +6,7 @@ use App\Filament\NavigationGroup;
 use App\Filament\Support\Icons;
 use App\Filament\Support\Translations;
 use App\Support\SiteSettings;
+use App\Support\Translatable;
 use BackedEnum;
 use Filament\Actions\Action;
 use Filament\Forms\Components\FileUpload;
@@ -13,6 +14,7 @@ use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Filament\Schemas\Components\Actions;
@@ -77,6 +79,9 @@ class ManageSiteSettings extends Page
                         Tab::make(__('admin.settings.tabs.about'))
                             ->icon(Heroicon::OutlinedInformationCircle)
                             ->schema($this->aboutTab()),
+                        Tab::make(__('admin.settings.tabs.trust'))
+                            ->icon(Heroicon::OutlinedShieldCheck)
+                            ->schema($this->trustTab()),
                         Tab::make(__('admin.settings.tabs.seo'))
                             ->icon(Heroicon::OutlinedMagnifyingGlass)
                             ->schema([
@@ -245,6 +250,52 @@ class ManageSiteSettings extends Page
                     ->rows(3),
             ]),
             static::cinematicImage('about_image'),
+        ];
+    }
+
+    /**
+     * Licences and accreditations (commercial registration, chamber membership, ISO...),
+     * listed in the footer and on the About page. Hidden items stay saved but off the site.
+     *
+     * @return array<Component>
+     */
+    protected function trustTab(): array
+    {
+        return [
+            Repeater::make('credentials')
+                ->label(__('admin.settings.fields.credentials'))
+                ->helperText(__('admin.settings.fields.credentials_help'))
+                ->schema([
+                    ...collect(config('site.locales'))
+                        ->map(fn (array $locale, string $key) => TextInput::make("name.{$key}")
+                            ->label(__('admin.settings.fields.credential_name').' — '.$locale['name'])
+                            ->extraInputAttributes(['dir' => $locale['dir']])
+                            ->required()
+                            ->maxLength(120))
+                        ->values()
+                        ->all(),
+                    TextInput::make('number')
+                        ->label(__('admin.settings.fields.credential_number'))
+                        ->maxLength(60),
+                    TextInput::make('url')
+                        ->label(__('admin.settings.fields.credential_url'))
+                        ->url(),
+                    FileUpload::make('logo')
+                        ->label(__('admin.settings.fields.credential_logo'))
+                        ->image()
+                        ->disk('public')
+                        ->directory('credentials'),
+                    Toggle::make('visible')
+                        ->label(__('admin.settings.fields.credential_visible'))
+                        ->default(true),
+                ])
+                ->columns(['md' => 2])
+                ->defaultItems(0)
+                ->addActionLabel(__('admin.add_item'))
+                ->reorderable()
+                ->collapsible()
+                ->itemLabel(fn (array $state): ?string => Translatable::pick($state['name'] ?? null))
+                ->columnSpanFull(),
         ];
     }
 

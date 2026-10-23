@@ -44,6 +44,25 @@ class SiteSettings
     }
 
     /**
+     * The licences and accreditations marked as shown, with their name in the current locale.
+     *
+     * @return list<array{name: string, number: ?string, url: ?string, logo: ?string}>
+     */
+    public function credentials(): array
+    {
+        return collect($this->get('credentials', []))
+            ->filter(fn (array $item) => ($item['visible'] ?? true) && Translatable::pick($item['name'] ?? null))
+            ->map(fn (array $item) => [
+                'name' => Translatable::pick($item['name']),
+                'number' => $item['number'] ?? null,
+                'url' => $item['url'] ?? null,
+                'logo' => $item['logo'] ?? null,
+            ])
+            ->values()
+            ->all();
+    }
+
+    /**
      * @param  array<string, mixed>  $values
      */
     public function set(array $values): void

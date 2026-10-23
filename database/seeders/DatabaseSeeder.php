@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
             DocSeeder::class,
             FaqSeeder::class,
             InsightSeeder::class,
+            TrustExampleSeeder::class,
         ]);
 
         // Set ADMIN_EMAIL / ADMIN_PASSWORD in .env before seeding production.

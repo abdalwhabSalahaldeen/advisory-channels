@@ -34,6 +34,8 @@ return [
     ],
     'palm_title' => 'The palm: the symbol of our identity',
     'palm_text' => 'The palm tree represents our deep national belonging and the values of authenticity and sustainability. Its roots, anchored in the ground, are our national foundations; its fronds, reaching for the sky, are our ambition to expand regionally and globally.',
+    'credentials_eyebrow' => 'Trust & accreditation',
+    'credentials_title' => 'Licensed and accredited',
     'leadership_eyebrow' => 'Our leadership',
     'leadership_title' => 'Global experience, Saudi roots',
 

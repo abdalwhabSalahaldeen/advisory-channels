@@ -5,6 +5,7 @@ return [
     'about' => 'A Saudi consulting and professional services firm blending local insight with global best practices to deliver tailor-made solutions.',
     'explore' => 'Explore',
     'contact' => 'Contact',
+    'credentials' => 'Licensed & accredited',
     'rights' => 'All rights reserved.',
     'privacy' => 'Privacy Policy',
     'faqs' => 'FAQs',
