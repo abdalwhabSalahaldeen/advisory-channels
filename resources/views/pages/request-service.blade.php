@@ -4,7 +4,7 @@
 @section('description', __('request.text'))
 
 @section('content')
-    <x-ui.page-hero :eyebrow="__('request.eyebrow')" :title="__('request.title')" :text="__('request.text')" />
+    <x-ui.page-hero :image="asset(config('site.images.pages.request-service'))" :eyebrow="__('request.eyebrow')" :title="__('request.title')" :text="__('request.text')" />
 
     <section class="py-24 sm:py-32">
         <div class="container-site grid gap-12 lg:grid-cols-12">

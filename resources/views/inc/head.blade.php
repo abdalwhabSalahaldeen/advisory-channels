@@ -11,6 +11,9 @@
 <script>document.documentElement.classList.add('js')</script>
 
 <title>{{ $pageTitle }}</title>
+<link rel="icon" href="{{ asset('favicon.ico') }}" sizes="48x48">
+<link rel="icon" href="{{ asset('images/brand/icon.svg') }}" type="image/svg+xml">
+<link rel="apple-touch-icon" href="{{ asset('apple-touch-icon.png') }}">
 <meta name="description" content="{{ $metaDescription }}">
 <link rel="canonical" href="{{ $alternates[$locale] ?? url()->current() }}">
 @foreach ($alternates as $code => $url)
@@ -42,6 +45,5 @@
 </script>
 @stack('head')
 
-@fonts
 @vite(['resources/css/app.css', 'resources/js/app.js'])
 @livewireStyles

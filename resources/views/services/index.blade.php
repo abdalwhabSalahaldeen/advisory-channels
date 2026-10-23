@@ -4,7 +4,7 @@
 @section('description', __('services.text'))
 
 @section('content')
-    <x-ui.page-hero :eyebrow="__('services.eyebrow')" :title="__('services.title')" :text="__('services.text')">
+    <x-ui.page-hero :image="asset(config('site.images.pages.services'))" :eyebrow="__('services.eyebrow')" :title="__('services.title')" :text="__('services.text')">
         {{-- Table of contents of the four channels --}}
         <nav class="mt-14 grid gap-px overflow-hidden border border-white/10 bg-white/10 sm:grid-cols-2 lg:grid-cols-4" aria-label="{{ __('services.channels') }}" data-reveal data-reveal-delay="0.35">
             @foreach ($services as $service)
@@ -68,8 +68,8 @@
                         {{-- Visual + narrative --}}
                         <div class="mt-14 grid gap-10 xl:grid-cols-5">
                             <div class="relative overflow-hidden bg-forest-950 xl:col-span-2" data-reveal-image>
-                                @if ($service->image)
-                                    <img src="{{ Storage::disk('public')->url($service->image) }}" alt="" loading="lazy" class="aspect-[16/6] size-full object-cover xl:aspect-auto xl:h-full">
+                                @if ($serviceImage = $service->imageUrl())
+                                    <img src="{{ $serviceImage }}" alt="" loading="lazy" class="aspect-[16/6] size-full object-cover xl:aspect-auto xl:h-full">
                                 @else
                                     {{-- Abstract panel until a photo is uploaded for the service. --}}
                                     <div class="relative flex aspect-[16/6] items-center justify-between p-8 xl:aspect-auto xl:h-full xl:min-h-80 xl:flex-col xl:items-start">

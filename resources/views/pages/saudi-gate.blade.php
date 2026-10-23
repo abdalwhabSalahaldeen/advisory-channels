@@ -4,7 +4,7 @@
 @section('description', __('gate.meta_description'))
 
 @section('content')
-    <x-ui.page-hero :eyebrow="__('gate.eyebrow')" :title="__('gate.title')" :text="__('gate.text')">
+    <x-ui.page-hero :image="asset(config('site.images.pages.saudi-gate'))" :eyebrow="__('gate.eyebrow')" :title="__('gate.title')" :text="__('gate.text')">
         <div class="mt-10 flex flex-wrap gap-3">
             <x-ui.button href="#gate-form">{{ __('gate.form_title') }}</x-ui.button>
             <x-ui.button href="#journey" variant="outline-light" icon="arrow-down">{{ __('gate.journey_title') }}</x-ui.button>

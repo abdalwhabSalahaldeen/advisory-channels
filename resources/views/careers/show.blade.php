@@ -4,7 +4,7 @@
 @section('description', $opening->tr('summary'))
 
 @section('content')
-    <x-ui.page-hero :eyebrow="$opening->type->getLabel()" :title="$opening->tr('title')" :text="$opening->tr('summary')">
+    <x-ui.page-hero :image="asset(config('site.images.pages.careers'))" :eyebrow="$opening->type->getLabel()" :title="$opening->tr('title')" :text="$opening->tr('summary')">
         <div class="mt-8 flex flex-wrap gap-3 text-sm font-semibold text-white/70">
             @if ($location = $opening->tr('location'))
                 <span class="inline-flex items-center gap-2"><x-ui.icon name="pin" class="size-4 text-gold-400" /> {{ $location }}</span>

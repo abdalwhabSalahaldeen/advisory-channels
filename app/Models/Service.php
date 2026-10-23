@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Storage;
 
 #[Fillable([
     'slug', 'title', 'excerpt', 'body', 'highlights', 'icon', 'image',
@@ -57,6 +58,20 @@ class Service extends Model
         preg_match('/<p[^>]*>(.*?)<\/p>/su', (string) $this->tr('body', $locale), $match);
 
         return isset($match[1]) ? trim(html_entity_decode(strip_tags($match[1]))) : null;
+    }
+
+    /**
+     * The uploaded photo, or the brand photo assigned to this service in config/site.php.
+     */
+    public function imageUrl(): ?string
+    {
+        if ($this->image) {
+            return Storage::disk('public')->url($this->image);
+        }
+
+        $default = config("site.images.services.{$this->slug}");
+
+        return $default ? asset($default) : null;
     }
 
     #[Scope]

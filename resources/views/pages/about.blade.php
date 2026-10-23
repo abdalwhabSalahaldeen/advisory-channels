@@ -3,7 +3,7 @@
 @section('title', __('about.meta_title'))
 
 @section('content')
-    <x-ui.page-hero :eyebrow="__('about.eyebrow')" :title="__('about.title')" :text="$site->tr('home_intro')" />
+    <x-ui.page-hero :image="asset(config('site.images.pages.about'))" :eyebrow="__('about.eyebrow')" :title="__('about.title')" :text="$site->tr('home_intro')" />
 
     {{-- Story --}}
     <section class="py-24 sm:py-32">

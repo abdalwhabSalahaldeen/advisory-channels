@@ -217,7 +217,7 @@ npm run dev     # Vite dev server with hot reload
 npm run build   # production build into public/build
 ```
 
-- Brand tokens live in `resources/css/app.css`: brand green `#017337` (`brand-700`), deep royal greens
+- Brand tokens live in `resources/css/app.css`: brand green `#007236` (`brand-700`), deep royal greens
   (`forest-*`), desert sand (`sand-*`) and gold (`gold-*`) for fine details.
 - `.heading-display` gives the light, large headline style; `[data-split]` headings rise line by line.
 - `.pattern-star` is the Najdi-inspired eight-point star lattice; `.bracket-frame` is the logo's bracket motif in gold.

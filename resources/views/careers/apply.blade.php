@@ -3,7 +3,7 @@
 @section('title', __('careers.general_application'))
 
 @section('content')
-    <x-ui.page-hero :eyebrow="__('careers.eyebrow')" :title="__('careers.general_title')" :text="__('careers.general_text')" />
+    <x-ui.page-hero :image="asset(config('site.images.pages.careers'))" :eyebrow="__('careers.eyebrow')" :title="__('careers.general_title')" :text="__('careers.general_text')" />
 
     <section class="py-24 sm:py-32">
         <div class="container-site max-w-3xl!">

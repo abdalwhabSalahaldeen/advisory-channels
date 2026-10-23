@@ -3,15 +3,10 @@
 @section('title', __('index.meta_title'))
 
 @section('content')
-    {{-- Hero: cinematic, deep royal green, star lattice; an uploaded photo (Site settings) sits behind it. --}}
+    {{-- Hero: cinematic, deep royal green, star lattice over a brand photo (or the one uploaded in Site settings). --}}
     <section id="home" class="relative isolate flex min-h-dvh flex-col overflow-hidden bg-forest-950 text-white">
-        @if ($heroImage = $site->get('hero_image'))
-            <img src="{{ Storage::disk('public')->url($heroImage) }}" alt="" class="ken-burns absolute inset-0 -z-20 size-full object-cover opacity-50">
-            <div class="absolute inset-0 -z-10 bg-gradient-to-t from-forest-950 via-forest-950/60 to-forest-950/40" aria-hidden="true"></div>
-        @else
-            <canvas data-network class="absolute inset-0 -z-10 size-full opacity-80" aria-hidden="true"></canvas>
-            <div class="absolute -top-64 start-1/4 -z-10 size-[56rem] rounded-full bg-brand-700/30 blur-[160px]" aria-hidden="true"></div>
-        @endif
+        <img src="{{ ($heroImage = $site->get('hero_image')) ? Storage::disk('public')->url($heroImage) : asset(config('site.images.hero')) }}" alt="" class="ken-burns absolute inset-0 -z-20 size-full object-cover opacity-50">
+        <div class="absolute inset-0 -z-10 bg-gradient-to-t from-forest-950 via-forest-950/60 to-forest-950/40" aria-hidden="true"></div>
         <div class="pattern-star absolute inset-0 -z-10 text-white/[0.03]" aria-hidden="true"></div>
 
         <div class="container-site flex flex-1 items-center pt-40 pb-16">
@@ -63,15 +58,7 @@
                 <p class="eyebrow" data-reveal><span class="font-latin">01</span> {{ __('index.intro_eyebrow') }}</p>
                 <div class="bracket-frame mt-12 hidden max-w-xs lg:block">
                 <div class="relative aspect-[3/4] overflow-hidden bg-forest-900" data-reveal-image>
-                    @if ($aboutImage = $site->get('about_image'))
-                        <img src="{{ Storage::disk('public')->url($aboutImage) }}" alt="" class="size-full object-cover">
-                    @else
-                        <div class="pattern-star absolute inset-0 text-gold-300/15" aria-hidden="true"></div>
-                        <svg viewBox="0 0 48 48" class="absolute inset-0 m-auto size-40" aria-hidden="true">
-                            <path d="M24 44c.6-7 .5-14 0-22" stroke="#e2c88f" stroke-width="1.2" stroke-linecap="round" fill="none" />
-                            <path d="M24 22c-3.5-4.6-8.8-6.2-14-4.8 4.2.4 8.4 2 11.2 5.2M24 22c3.5-4.6 8.8-6.2 14-4.8-4.2.4-8.4 2-11.2 5.2M24 22c-1.8-5.4-5.4-9-10.4-10.2 3.6 1.8 6.6 5 8 9M24 22c1.8-5.4 5.4-9 10.4-10.2-3.6 1.8-6.6 5-8 9M24 22c0-5.4 1.2-9.6 3.6-12.8-2.4 1.4-3.8 4.2-4.4 7.2" fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" />
-                        </svg>
-                    @endif
+                    <img src="{{ ($aboutImage = $site->get('about_image')) ? Storage::disk('public')->url($aboutImage) : asset(config('site.images.intro')) }}" alt="" loading="lazy" class="size-full object-cover">
                 </div>
                 </div>
             </div>

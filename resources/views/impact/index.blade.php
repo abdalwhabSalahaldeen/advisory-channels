@@ -4,7 +4,7 @@
 @section('description', __('impact.text'))
 
 @section('content')
-    <x-ui.page-hero :eyebrow="__('impact.eyebrow')" :title="__('impact.title')" :text="__('impact.text')" />
+    <x-ui.page-hero :image="asset(config('site.images.pages.impact'))" :eyebrow="__('impact.eyebrow')" :title="__('impact.title')" :text="__('impact.text')" />
 
     <section class="py-20 sm:py-28">
         <p class="container-site mb-12 text-sm text-ink-700/70">{{ __('impact.confidential') }}</p>

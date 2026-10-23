@@ -8,13 +8,13 @@
 @custom-variant ltr (&:where([dir="ltr"], [dir="ltr"] *));
 
 @theme {
-    --font-sans: var(--font-plex), var(--font-plex-arabic), ui-sans-serif, system-ui, sans-serif;
-    --font-arabic: var(--font-plex-arabic), var(--font-plex), ui-sans-serif, system-ui, sans-serif;
-    --font-latin: var(--font-plex), ui-sans-serif, system-ui, sans-serif;
-    /* Editorial serif for English headlines; Arabic pages swap it for Plex Arabic (see below). */
-    --font-display: var(--font-fraunces), Georgia, 'Times New Roman', serif;
+    /* Dubai, the brand typeface for both Arabic and English (see the @font-face rules below). */
+    --font-sans: 'Dubai', ui-sans-serif, system-ui, sans-serif;
+    --font-arabic: 'Dubai', ui-sans-serif, system-ui, sans-serif;
+    --font-latin: 'Dubai', ui-sans-serif, system-ui, sans-serif;
+    --font-display: 'Dubai', ui-sans-serif, system-ui, sans-serif;
 
-    /* Brand green, built around the logo's #017337 (brand-700). */
+    /* Brand green, built around the official #007236 (brand-700). */
     --color-brand-50: #ecfdf3;
     --color-brand-100: #d1fae1;
     --color-brand-200: #a7f0c6;
@@ -22,7 +22,7 @@
     --color-brand-400: #34c77d;
     --color-brand-500: #10a95f;
     --color-brand-600: #058a4b;
-    --color-brand-700: #017337;
+    --color-brand-700: #007236;
     --color-brand-800: #065b30;
     --color-brand-900: #064a29;
     --color-brand-950: #022a16;
@@ -57,8 +57,36 @@
     --ease-luxe: cubic-bezier(0.65, 0, 0.35, 1);
 }
 
-[dir='rtl'] {
-    --font-display: var(--font-plex-arabic), var(--font-plex), ui-sans-serif, system-ui, sans-serif;
+@font-face {
+    font-family: 'Dubai';
+    src: url('../fonts/dubai/Dubai-Light.woff') format('woff');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Dubai';
+    src: url('../fonts/dubai/Dubai-Regular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Dubai';
+    src: url('../fonts/dubai/Dubai-Medium.woff') format('woff');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Dubai';
+    src: url('../fonts/dubai/Dubai-Bold.woff') format('woff');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
 }
 
 @layer base {

@@ -40,7 +40,7 @@ class AdminPanelProvider extends PanelProvider
             ], isRequired: true)
             ->brandName(fn (): string => config('app.name'))
             ->colors([
-                'primary' => Color::hex('#017337'),
+                'primary' => Color::hex('#007236'),
                 'gray' => Color::Zinc,
             ])
             ->font('Tajawal')

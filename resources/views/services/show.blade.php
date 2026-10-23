@@ -4,7 +4,7 @@
 @section('description', $service->tr('meta_description') ?: $service->tr('excerpt'))
 
 @section('content')
-    <x-ui.page-hero :eyebrow="__('services.eyebrow')" :title="$service->tr('title')" :text="$service->tr('excerpt')" />
+    <x-ui.page-hero :eyebrow="__('services.eyebrow')" :title="$service->tr('title')" :text="$service->tr('excerpt')" :image="$service->imageUrl()" />
 
     <section class="py-24 sm:py-32">
         <div class="container-site grid gap-16 lg:grid-cols-12">

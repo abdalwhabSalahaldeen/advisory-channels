@@ -4,7 +4,7 @@
 @section('description', __('insights.meta_description'))
 
 @section('content')
-    <x-ui.page-hero :eyebrow="__('insights.eyebrow')" :title="__('insights.title')" :text="__('insights.text')" />
+    <x-ui.page-hero :image="asset(config('site.images.pages.insights'))" :eyebrow="__('insights.eyebrow')" :title="__('insights.title')" :text="__('insights.text')" />
 
     {{-- Featured story, McKinsey/BCG style --}}
     @if ($featured)
