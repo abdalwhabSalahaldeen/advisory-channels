@@ -28,7 +28,7 @@ class DatabaseSeeder extends Seeder
 
         // Set ADMIN_EMAIL / ADMIN_PASSWORD in .env before seeding production.
         User::query()->firstOrCreate(
-            ['email' => env('ADMIN_EMAIL', 'admin@advisory-channels.com')],
+            ['email' => env('ADMIN_EMAIL', 'admin@advisory.com.sa')],
             [
                 'name' => 'Admin',
                 'password' => env('ADMIN_PASSWORD') ?: Str::password(20),

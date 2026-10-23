@@ -1,7 +1,7 @@
 # Advisory Channels Website
 
 > The new marketing website and content dashboard for **Advisory Channels** (قنوات الاستشارات), a Saudi
-> consulting firm. It replaces the Wix site at advisory-channels.com and follows the structure of the
+> consulting firm. It replaces the Wix site at advisory.com.sa and follows the structure of the
 > Drovox website, rebuilt on **Laravel 13**. Fully **bilingual (Arabic first, English)** and RTL-aware.
 
 🌐 **Languages:** [English](#english) · [العربية](#العربية)

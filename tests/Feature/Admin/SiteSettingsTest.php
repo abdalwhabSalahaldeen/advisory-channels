@@ -15,7 +15,7 @@ class SiteSettingsTest extends AdminTestCase
         app(SiteSettings::class)->set([
             'site_name' => ['ar' => 'قنوات الاستشارات', 'en' => 'Advisory Channels'],
             'hero_title' => ['ar' => 'إرث سعودي', 'en' => 'Saudi Heritage'],
-            'contact_email' => 'info@advisory-channels.com',
+            'contact_email' => 'info@advisory.com.sa',
             'home_stats' => [['value' => '2019', 'label' => ['ar' => 'سنة التأسيس', 'en' => 'Founded']]],
         ]);
 
@@ -25,7 +25,7 @@ class SiteSettingsTest extends AdminTestCase
             ->assertSchemaStateSet([
                 'hero_title.ar' => 'إرث سعودي',
                 'hero_title.en' => 'Saudi Heritage',
-                'contact_email' => 'info@advisory-channels.com',
+                'contact_email' => 'info@advisory.com.sa',
             ]);
     }
 
@@ -34,7 +34,7 @@ class SiteSettingsTest extends AdminTestCase
         app(SiteSettings::class)->set([
             'site_name' => ['ar' => 'قنوات الاستشارات', 'en' => 'Advisory Channels'],
             'hero_title' => ['ar' => 'إرث سعودي', 'en' => 'Saudi Heritage'],
-            'contact_email' => 'info@advisory-channels.com',
+            'contact_email' => 'info@advisory.com.sa',
         ]);
 
         $this->actingAs($this->admin);
@@ -43,7 +43,7 @@ class SiteSettingsTest extends AdminTestCase
             ->fillForm([
                 'hero_title.ar' => 'عنوان جديد',
                 'contact_phone' => '+966 11 000 0000',
-                'notification_email' => 'leads@advisory-channels.com',
+                'notification_email' => 'leads@advisory.com.sa',
                 'home_stats' => [
                     ['value' => '+20', 'label' => ['ar' => 'عاماً من الخبرة', 'en' => 'Years of experience']],
                 ],
@@ -58,7 +58,7 @@ class SiteSettingsTest extends AdminTestCase
         $this->assertSame('عنوان جديد', $settings->tr('hero_title', 'ar'));
         $this->assertSame('Saudi Heritage', $settings->tr('hero_title', 'en'));
         $this->assertSame('+966 11 000 0000', $settings->get('contact_phone'));
-        $this->assertSame('leads@advisory-channels.com', $settings->get('notification_email'));
+        $this->assertSame('leads@advisory.com.sa', $settings->get('notification_email'));
         $this->assertEquals(
             [['value' => '+20', 'icon' => null, 'label' => ['ar' => 'عاماً من الخبرة', 'en' => 'Years of experience']]],
             $settings->get('home_stats'),
@@ -86,7 +86,7 @@ class SiteSettingsTest extends AdminTestCase
         app(SiteSettings::class)->set([
             'site_name' => ['ar' => 'قنوات الاستشارات', 'en' => 'Advisory Channels'],
             'hero_title' => ['ar' => 'إرث سعودي', 'en' => 'Saudi Heritage'],
-            'contact_email' => 'info@advisory-channels.com',
+            'contact_email' => 'info@advisory.com.sa',
         ]);
 
         $this->actingAs($this->admin);
@@ -120,7 +120,7 @@ class SiteSettingsTest extends AdminTestCase
         app(SiteSettings::class)->set([
             'site_name' => ['ar' => 'قنوات الاستشارات', 'en' => 'Advisory Channels'],
             'hero_title' => ['ar' => 'إرث سعودي', 'en' => 'Saudi Heritage'],
-            'contact_email' => 'info@advisory-channels.com',
+            'contact_email' => 'info@advisory.com.sa',
         ]);
 
         $this->actingAs($this->admin);

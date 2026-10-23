@@ -18,7 +18,7 @@ class SettingSeeder extends Seeder
         $settings->set([
             // The Arabic trade name is a placeholder until the official one is confirmed.
             'site_name' => ['ar' => 'قنوات الاستشارات', 'en' => 'Advisory Channels'],
-            'contact_email' => 'info@advisory-channels.com',
+            'contact_email' => 'info@advisory.com.sa',
             'contact_phone' => null,
             'whatsapp' => null,
             'address' => ['ar' => 'الرياض، المملكة العربية السعودية', 'en' => 'Riyadh, Saudi Arabia'],

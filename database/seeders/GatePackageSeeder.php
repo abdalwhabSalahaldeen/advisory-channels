@@ -6,7 +6,7 @@ use App\Models\GatePackage;
 use Illuminate\Database\Seeder;
 
 /**
- * The seven Saudi Gate stages from advisory-channels.com/saudi-gate.
+ * The seven Saudi Gate stages from advisory.com.sa/saudi-gate.
  */
 class GatePackageSeeder extends Seeder
 {

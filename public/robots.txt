@@ -1,4 +1,4 @@
 User-agent: *
 Disallow:
 
-Sitemap: https://www.advisory-channels.com/sitemap.xml
+Sitemap: https://advisory.com.sa/sitemap.xml

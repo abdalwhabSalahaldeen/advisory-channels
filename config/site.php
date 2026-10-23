@@ -27,6 +27,6 @@ return [
     |
     */
 
-    'notify_email' => env('LEADS_NOTIFY_EMAIL', 'info@advisory-channels.com'),
+    'notify_email' => env('LEADS_NOTIFY_EMAIL', 'info@advisory.com.sa'),
 
 ];

@@ -75,7 +75,7 @@ class FormsTest extends TestCase
 
         Notification::assertSentOnDemand(
             NewLeadReceived::class,
-            fn ($notification, $channels, AnonymousNotifiable $notifiable) => $notifiable->routes['mail'] === 'info@advisory-channels.com'
+            fn ($notification, $channels, AnonymousNotifiable $notifiable) => $notifiable->routes['mail'] === 'info@advisory.com.sa'
                 && $notification->lead->is($lead),
         );
     }

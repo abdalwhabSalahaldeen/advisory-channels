@@ -6,7 +6,7 @@ use App\Models\Service;
 use Illuminate\Database\Seeder;
 
 /**
- * The four service channels from advisory-channels.com, with Arabic drafts
+ * The four service channels from advisory.com.sa, with Arabic drafts
  * and expanded detail copy for the new per-service pages.
  */
 class ServiceSeeder extends Seeder
