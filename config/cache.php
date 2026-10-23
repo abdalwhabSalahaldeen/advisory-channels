@@ -131,6 +131,11 @@ return [
     |
     */
 
-    'serializable_classes' => false,
+    // Dates only: Filament stores the expiry of emailed sign-in codes as a Carbon instance.
+    'serializable_classes' => [
+        Illuminate\Support\Carbon::class,
+        Carbon\Carbon::class,
+        Carbon\CarbonImmutable::class,
+    ],
 
 ];

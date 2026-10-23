@@ -33,7 +33,9 @@ class AdminPanelProvider extends PanelProvider
             ->profile(isSimple: false)
             // Every panel user must sign in with a second factor: an emailed code or an authenticator app.
             ->multiFactorAuthentication([
-                EmailAuthentication::make(),
+                EmailAuthentication::make()
+                    // Local development only: a fixed code, since mail goes to the log there.
+                    ->generateCodesUsing(app()->isLocal() ? fn (): string => '666666' : null),
                 AppAuthentication::make()
                     ->brandName(config('app.name'))
                     ->recoverable(),
