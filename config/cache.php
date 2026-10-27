@@ -1,5 +1,6 @@
 <?php
 
+use Carbon\CarbonImmutable;
 use Illuminate\Support\Str;
 
 return [
@@ -131,6 +132,12 @@ return [
     |
     */
 
-    'serializable_classes' => false,
+    // Filament's emailed sign-in codes store their expiry time as a Carbon date;
+    // without these, every code is read back broken and rejected.
+    'serializable_classes' => [
+        Carbon\Carbon::class,
+        CarbonImmutable::class,
+        Illuminate\Support\Carbon::class,
+    ],
 
 ];

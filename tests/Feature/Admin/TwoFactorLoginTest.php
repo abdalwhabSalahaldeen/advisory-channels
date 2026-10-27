@@ -15,7 +15,45 @@ class TwoFactorLoginTest extends AdminTestCase
     {
         parent::setUp();
 
+        config(['site.admin_two_factor' => true]);
         Filament::setCurrentPanel('admin');
+    }
+
+    public function test_password_alone_signs_in_while_two_factor_is_off(): void
+    {
+        config(['site.admin_two_factor' => false]);
+        Notification::fake();
+        $admin = User::factory()->create(['is_admin' => true]);
+
+        Livewire::test(Login::class)
+            ->fillForm(['email' => $admin->email, 'password' => 'password'])
+            ->call('authenticate')
+            ->assertRedirect(Filament::getUrl());
+
+        $this->assertAuthenticatedAs($admin);
+        Notification::assertNothingSent();
+    }
+
+    public function test_emailed_codes_work_with_the_database_cache_store(): void
+    {
+        // The array store used by tests keeps PHP objects as-is; the database store
+        // serializes them, which once broke the code's Carbon expiry date.
+        config(['cache.default' => 'database']);
+        Notification::fake();
+        $admin = User::factory()->create(['is_admin' => true, 'has_email_authentication' => true]);
+
+        $login = Livewire::test(Login::class)
+            ->fillForm(['email' => $admin->email, 'password' => 'password'])
+            ->call('authenticate');
+
+        $code = Notification::sent($admin, VerifyEmailAuthentication::class)->first()->code;
+
+        $login
+            ->set('data.multiFactor.email_code.code', $code)
+            ->call('authenticate')
+            ->assertRedirect(Filament::getUrl());
+
+        $this->assertAuthenticatedAs($admin);
     }
 
     public function test_password_alone_does_not_sign_in_and_an_email_code_is_sent(): void

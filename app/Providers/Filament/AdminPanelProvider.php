@@ -31,13 +31,16 @@ class AdminPanelProvider extends PanelProvider
             ->path('management')
             ->login()
             ->profile(isSimple: false)
-            // Every panel user must sign in with a second factor: an emailed code or an authenticator app.
-            ->multiFactorAuthentication([
-                EmailAuthentication::make(),
-                AppAuthentication::make()
-                    ->brandName(config('app.name'))
-                    ->recoverable(),
-            ], isRequired: true)
+            // A second factor (emailed code or authenticator app) once outgoing email works; see ADMIN_TWO_FACTOR.
+            ->multiFactorAuthentication(
+                fn (): array => config('site.admin_two_factor') ? [
+                    EmailAuthentication::make(),
+                    AppAuthentication::make()
+                        ->brandName(config('app.name'))
+                        ->recoverable(),
+                ] : [],
+                isRequired: fn (): bool => config('site.admin_two_factor'),
+            )
             ->brandName(fn (): string => config('app.name'))
             ->colors([
                 'primary' => Color::hex('#007236'),

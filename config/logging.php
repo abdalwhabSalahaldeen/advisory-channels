@@ -135,6 +135,15 @@ return [
             'path' => storage_path('logs/laravel.log'),
         ],
 
+        // Audit trail of the dashboard's file manager (who uploaded, edited or deleted what).
+        'files' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/files.log'),
+            'level' => 'info',
+            'days' => 365,
+            'replace_placeholders' => true,
+        ],
+
     ],
 
 ];
