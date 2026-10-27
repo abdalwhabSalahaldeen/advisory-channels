@@ -2,7 +2,6 @@
 
 namespace Tests\Feature\Site;
 
-use App\Livewire\ContactForm;
 use App\Livewire\SubscribeForm;
 use App\Support\SiteSettings;
 use Database\Seeders\DatabaseSeeder;
