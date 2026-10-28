@@ -3,6 +3,7 @@
 use App\Http\Controllers\CareerController;
 use App\Http\Controllers\CaseStudyController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\DeployHookController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InsightController;
@@ -11,6 +12,7 @@ use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\SitemapController;
 use App\Http\Middleware\SetLocale;
 use App\Support\Localization;
+use Illuminate\Foundation\Http\Middleware\PreventRequestForgery;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -21,6 +23,12 @@ Route::get('sitemap.xml', SitemapController::class)->name('sitemap');
 // One-time setup from the browser on hosting without a terminal (see config/site.php).
 Route::get('install', [InstallController::class, 'show'])->name('install');
 Route::post('install', [InstallController::class, 'store'])->middleware('throttle:10,1')->name('install.store');
+
+// Called by the GitHub deploy workflow after each upload; authenticated with DEPLOY_TOKEN, not a session.
+Route::post('deploy/hook', DeployHookController::class)
+    ->withoutMiddleware(PreventRequestForgery::class)
+    ->middleware('throttle:10,1')
+    ->name('deploy.hook');
 
 Route::prefix('{locale}')
     ->whereIn('locale', array_keys(config('site.locales')))

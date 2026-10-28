@@ -126,4 +126,17 @@ return [
 
     'install_token' => env('INSTALL_TOKEN'),
 
+    /*
+    |--------------------------------------------------------------------------
+    | Deploy Hook
+    |--------------------------------------------------------------------------
+    |
+    | After the GitHub workflow uploads a release over FTP it calls
+    | POST /deploy/hook with this token to run the database updates and clear
+    | the caches. The hook is disabled while DEPLOY_TOKEN is empty.
+    |
+    */
+
+    'deploy_token' => env('DEPLOY_TOKEN'),
+
 ];

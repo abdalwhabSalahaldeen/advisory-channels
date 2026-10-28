@@ -8,11 +8,11 @@
 @custom-variant ltr (&:where([dir="ltr"], [dir="ltr"] *));
 
 @theme {
-    /* Dubai, the brand typeface for both Arabic and English (see the @font-face rules below). */
-    --font-sans: 'Dubai', ui-sans-serif, system-ui, sans-serif;
-    --font-arabic: 'Dubai', ui-sans-serif, system-ui, sans-serif;
-    --font-latin: 'Dubai', ui-sans-serif, system-ui, sans-serif;
-    --font-display: 'Dubai', ui-sans-serif, system-ui, sans-serif;
+    /* Tajawal, the brand typeface for both Arabic and English (loaded by the Vite font plugin). */
+    --font-sans: var(--font-tajawal), ui-sans-serif, system-ui, sans-serif;
+    --font-arabic: var(--font-tajawal), ui-sans-serif, system-ui, sans-serif;
+    --font-latin: var(--font-tajawal), ui-sans-serif, system-ui, sans-serif;
+    --font-display: var(--font-tajawal), ui-sans-serif, system-ui, sans-serif;
 
     /* Brand green, built around the official #007236 (brand-700). */
     --color-brand-50: #ecfdf3;
@@ -55,38 +55,6 @@
 
     --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
     --ease-luxe: cubic-bezier(0.65, 0, 0.35, 1);
-}
-
-@font-face {
-    font-family: 'Dubai';
-    src: url('../fonts/dubai/Dubai-Light.woff') format('woff');
-    font-weight: 300;
-    font-style: normal;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'Dubai';
-    src: url('../fonts/dubai/Dubai-Regular.woff') format('woff');
-    font-weight: 400;
-    font-style: normal;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'Dubai';
-    src: url('../fonts/dubai/Dubai-Medium.woff') format('woff');
-    font-weight: 500;
-    font-style: normal;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'Dubai';
-    src: url('../fonts/dubai/Dubai-Bold.woff') format('woff');
-    font-weight: 700;
-    font-style: normal;
-    font-display: swap;
 }
 
 @layer base {

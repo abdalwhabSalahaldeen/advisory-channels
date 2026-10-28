@@ -8,25 +8,27 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Process;
 use Illuminate\Support\Str;
+use RuntimeException;
 
 /**
- * Builds a zip for cPanel hosting without a terminal: the application with its
- * production dependencies and built assets, laid out as
+ * Builds the release for cPanel hosting without a terminal: the application with
+ * its production dependencies and built assets, laid out as
  *
- *   advisory-channels/   (outside the web root)
+ *   advisory-channels/   (outside the web root; name set with --app-folder)
  *   public_html/         (the web root, pointing at the folder above)
  *
- * Upload it to the hosting account's home folder and extract it there.
+ * By default it is zipped to upload and extract by hand; with --directory the
+ * folders are left in place for the GitHub deploy workflow to upload over FTP.
  */
 #[Signature('app:package-for-cpanel
     {--update : Leave out .env so an existing installation keeps its settings}
     {--domain=https://advisory.com.sa : The address the site will run on}
-    {--output= : Where to write the zip (defaults to storage/framework/releases)}')]
+    {--output= : Where to write the zip (defaults to storage/framework/releases)}
+    {--app-folder=advisory-channels : The application folder\'s name, next to public_html on the server}
+    {--directory= : Leave the built folders in this directory instead of zipping them}')]
 #[Description('Build a zip to upload and extract on cPanel hosting without a terminal')]
 class PackageForCpanel extends Command
 {
-    private const APP_FOLDER = 'advisory-channels';
-
     private const WEB_ROOT = 'public_html';
 
     /**
@@ -34,6 +36,14 @@ class PackageForCpanel extends Command
      */
     public function handle(): int
     {
+        $appFolder = (string) $this->option('app-folder');
+
+        if (! preg_match('/^[A-Za-z0-9._-]+$/', $appFolder) || in_array($appFolder, ['.', '..', self::WEB_ROOT], true)) {
+            $this->components->error("[{$appFolder}] is not a valid folder name.");
+
+            return self::FAILURE;
+        }
+
         if (trim(Process::path(base_path())->run('git status --porcelain --untracked-files=no')->output()) !== '') {
             $this->components->error('Commit your changes first: the package is built from the last commit.');
 
@@ -41,11 +51,62 @@ class PackageForCpanel extends Command
         }
 
         $workspace = storage_path('framework/releases/build-'.now()->format('YmdHis'));
-        $app = "{$workspace}/".self::APP_FOLDER;
+        $app = "{$workspace}/{$appFolder}";
         $webRoot = "{$workspace}/".self::WEB_ROOT;
 
         File::ensureDirectoryExists($app);
 
+        try {
+            $this->build($app, $webRoot, $appFolder);
+        } catch (RuntimeException $exception) {
+            File::deleteDirectory($workspace);
+            $this->components->error($exception->getMessage());
+
+            return self::FAILURE;
+        }
+
+        if ($directory = $this->option('directory')) {
+            File::deleteDirectory($directory);
+            File::ensureDirectoryExists(dirname($directory));
+
+            if (! File::moveDirectory($workspace, $directory)) {
+                $this->components->error("Could not move the release to [{$directory}].");
+
+                return self::FAILURE;
+            }
+
+            $this->components->info("Release ready in: {$directory}");
+
+            return self::SUCCESS;
+        }
+
+        $output = $this->option('output') ?: storage_path('framework/releases/advisory-channels-cpanel'.($this->option('update') ? '-update' : '').'-'.now()->format('Y-m-d-His').'.zip');
+        File::ensureDirectoryExists(dirname($output));
+
+        $this->components->task('Zipping', fn (): bool => $this->runProcess(
+            sprintf('zip -r -q -y %s %s %s', escapeshellarg($output), $appFolder, self::WEB_ROOT),
+            $workspace,
+        ));
+
+        File::deleteDirectory($workspace);
+
+        $this->newLine();
+        $this->components->info("Package ready: {$output}");
+
+        if (! $this->option('update')) {
+            $this->components->warn('The zip contains a fresh APP_KEY and INSTALL_TOKEN in .env. Do not commit or share it.');
+        }
+
+        return self::SUCCESS;
+    }
+
+    /**
+     * Exports the last commit and turns it into the two server folders.
+     *
+     * @throws RuntimeException when a step fails
+     */
+    private function build(string $app, string $webRoot, string $appFolder): void
+    {
         $this->components->task('Exporting the last commit', fn (): bool => $this->runProcess(
             sprintf('git archive HEAD | tar -x -C %s', escapeshellarg($app)),
         ));
@@ -68,7 +129,7 @@ class PackageForCpanel extends Command
 
         $this->components->task('Building the front-end assets', fn (): bool => $this->runProcess('npm run build', base_path(), timeout: 600));
 
-        $this->components->task('Preparing public_html', function () use ($app, $webRoot): bool {
+        $this->components->task('Preparing public_html', function () use ($app, $webRoot, $appFolder): bool {
             // The web root gets the committed public files plus the built and published assets.
             if (is_dir("{$app}/public")) {
                 File::moveDirectory("{$app}/public", $webRoot);
@@ -82,7 +143,7 @@ class PackageForCpanel extends Command
                 }
             }
 
-            File::put("{$webRoot}/index.php", $this->frontController());
+            File::put("{$webRoot}/index.php", $this->frontController($appFolder));
 
             return true;
         });
@@ -90,45 +151,27 @@ class PackageForCpanel extends Command
         if (! $this->option('update')) {
             $this->components->task('Writing the production .env', fn (): bool => (bool) File::put("{$app}/.env", $this->productionEnvironment()));
         }
-
-        $output = $this->option('output') ?: storage_path('framework/releases/advisory-channels-cpanel'.($this->option('update') ? '-update' : '').'-'.now()->format('Y-m-d-His').'.zip');
-        File::ensureDirectoryExists(dirname($output));
-
-        $this->components->task('Zipping', fn (): bool => $this->runProcess(
-            sprintf('zip -r -q -y %s %s %s', escapeshellarg($output), self::APP_FOLDER, self::WEB_ROOT),
-            $workspace,
-        ));
-
-        File::deleteDirectory($workspace);
-
-        $this->newLine();
-        $this->components->info("Package ready: {$output}");
-
-        if (! $this->option('update')) {
-            $this->components->warn('The zip contains a fresh APP_KEY and INSTALL_TOKEN in .env. Do not commit or share it.');
-        }
-
-        return self::SUCCESS;
     }
 
+    /**
+     * @throws RuntimeException when the command fails, so a broken release is never shipped
+     */
     private function runProcess(string $command, ?string $path = null, int $timeout = 300): bool
     {
         $result = Process::path($path ?? base_path())->timeout($timeout)->run($command);
 
         if ($result->failed()) {
-            $this->components->error(trim($result->errorOutput() ?: $result->output()));
+            throw new RuntimeException("[{$command}] failed: ".trim($result->errorOutput() ?: $result->output()));
         }
 
-        return $result->successful();
+        return true;
     }
 
     /**
      * public_html/index.php: loads the application from the folder next to the web root.
      */
-    private function frontController(): string
+    private function frontController(string $folder): string
     {
-        $folder = self::APP_FOLDER;
-
         return <<<PHP
         <?php
 
